@@ -69,6 +69,48 @@ GET catalog/index.json
 
 数据没有分页，每次直接返回该类型的完整列表。
 
+## 2.1 客户端动态入口配置
+
+客户端启动后会在后台静默请求一次：
+
+```text
+https://d.zjinnova.com/hermix/gameconfig/config.json
+```
+
+当前响应格式：
+
+```json
+{
+  "url": "https://github.com/zjinnova2027/hermixrom"
+}
+```
+
+后台据此推导公开索引：
+
+```text
+https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public/catalog/index.json
+```
+
+同时支持显式字段：
+
+```json
+{
+  "index_url": "https://raw.githubusercontent.com/owner/repo/main/public/catalog/index.json",
+  "fallback_index_url": "https://gh-proxy.com/https://raw.githubusercontent.com/owner/repo/main/public/catalog/index.json",
+  "branch": "main",
+  "content_root": "public"
+}
+```
+
+行为约定：
+
+- 每个应用进程只请求一次动态配置；
+- 请求在应用启动时后台执行，不显示 UI；
+- 成功时使用动态索引地址；
+- 失败时回退 APK 内置默认索引；
+- 日志记录请求开始、配置响应、推导结果、回退原因和耗时；
+- 分类、封面和 ROM 地址继续从 index 和分类 JSON 中动态获取。
+
 ## 3. 索引文件
 
 地址：

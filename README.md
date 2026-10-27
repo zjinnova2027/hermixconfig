@@ -46,6 +46,14 @@ hermixrom     公开数据仓库：index.json、分类 JSON、封面、ROM
 ../hermixrom
 ```
 
+动态入口配置：
+
+```text
+https://d.zjinnova.com/hermix/gameconfig/config.json
+```
+
+后台启动后静默请求一次，解析公开仓库地址；失败时客户端回退到内置索引。
+
 公开索引：
 
 ```text
