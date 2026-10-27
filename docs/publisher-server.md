@@ -32,13 +32,13 @@
     "fallbackPublicBaseUrl": "https://gh-proxy.com/https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public"
   },
   "gba": {
-    "root": "../game_list_gba",
+    "root": "../hermixrom_gba",
     "remote": "origin",
     "branch": "main",
     "contentRoot": "public",
     "githubUrl": "https://github.com/zjinnova2027/hermixrom_gba",
-    "publicBaseUrl": "https://raw.githubusercontent.com/nannandedongdong/game_list_gba/main/public",
-    "fallbackPublicBaseUrl": "https://gh-proxy.com/https://raw.githubusercontent.com/nannandedongdong/game_list_gba/main/public"
+    "publicBaseUrl": "https://raw.githubusercontent.com/zjinnova2027/hermixrom_gba/main/public",
+    "fallbackPublicBaseUrl": "https://gh-proxy.com/https://raw.githubusercontent.com/zjinnova2027/hermixrom_gba/main/public"
   }
 }
 ```
