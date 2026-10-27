@@ -106,9 +106,10 @@ https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public/catalog/ind
 
 - 每个应用进程只请求一次动态配置；
 - 请求在应用启动时后台执行，不显示 UI；
-- 成功时使用动态索引地址；
-- 失败时回退 APK 内置默认索引；
-- 日志记录请求开始、配置响应、推导结果、回退原因和耗时；
+- 成功时使用动态索引地址，并立即保存到 SharedPreferences；
+- 启动时动态配置失败，优先使用 SharedPreferences 中上次成功的地址；
+- SharedPreferences 没有有效地址时，才回退 APK 内置默认索引；
+- 日志记录请求开始、配置响应、持久化结果、SP 回退、默认回退和耗时；
 - 分类、封面和 ROM 地址继续从 index 和分类 JSON 中动态获取。
 
 ## 3. 索引文件
