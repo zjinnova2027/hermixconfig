@@ -1,0 +1,63 @@
+{
+  "server": {
+    "host": "127.0.0.1",
+    "port": 4173
+  },
+  "mainRepository": "hermixrom",
+  "repositories": {
+    "hermixrom": {
+      "root": "../hermixrom",
+      "remote": "origin",
+      "branch": "main",
+      "contentRoot": "public",
+      "githubUrl": "https://github.com/zjinnova2027/hermixrom",
+      "publicBaseUrl": "https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public",
+      "fallbackPublicBaseUrl": "https://gh-proxy.com/https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public"
+    }
+  },
+  "limits": {
+    "romBytes": 10485760,
+    "coverBytes": 2097152,
+    "zipMaxEntries": 2048,
+    "zipMaxUncompressedBytes": 134217728
+  },
+  "gameTypes": {
+    "GBA": {
+      "catalog": "gba.json",
+      "extensions": [
+        ".gba",
+        ".zip"
+      ],
+      "repository": "hermixrom"
+    },
+    "MD": {
+      "catalog": "md.json",
+      "extensions": [
+        ".md",
+        ".gen",
+        ".smd",
+        ".bin",
+        ".zip"
+      ],
+      "repository": "hermixrom"
+    },
+    "CPS1": {
+      "catalog": "cps1.json",
+      "extensions": [
+        ".zip"
+      ],
+      "repository": "hermixrom",
+      "uploadEnabled": false
+    },
+    "FC": {
+      "catalog": "fc.json",
+      "extensions": [
+        ".nes",
+        ".fds",
+        ".unf",
+        ".zip"
+      ],
+      "repository": "hermixrom"
+    }
+  }
+}

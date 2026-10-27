@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Game List Publisher</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">GAME LIST</p>
+        <h1>游戏发布后台</h1>
+        <p class="subtitle">上传后写入对应仓库；同仓库发布创建一次 Git 提交。</p>
+      </div>
+      <div class="topbar-actions">
+        <a class="nav-link" href="/repositories.html">仓库管理</a>
+        <div class="repo-card">
+          <span>发布仓库</span>
+          <a id="repoLink" href="#" target="_blank" rel="noreferrer">读取中...</a>
+          <code id="branchLabel">main</code>
+        </div>
+      </div>
+    </header>
+
+    <div id="notice" class="notice hidden" role="status"></div>
+
+    <main class="layout">
+      <section class="panel form-panel">
+        <div class="panel-title">
+          <div>
+            <p class="eyebrow">PUBLISH</p>
+            <h2>上传 / 更新游戏</h2>
+          </div>
+          <button id="newGameButton" class="text-button hidden" type="button">取消更新</button>
+        </div>
+
+        <form id="gameForm">
+          <label>
+            <span>更新已有游戏</span>
+            <select id="existingGame">
+              <option value="">新游戏</option>
+            </select>
+          </label>
+
+          <label>
+            <span>游戏名称</span>
+            <input id="gameName" name="name" maxlength="160" required placeholder="例如：热血硬派国夫君SP 汉化版V1.0">
+          </label>
+
+          <label>
+            <span>English Name</span>
+            <input id="gameNameEn" name="name_en" maxlength="160" required placeholder="例如：Final Fight">
+          </label>
+
+          <label>
+            <span>游戏类型</span>
+            <select id="gameType" name="game_type" required>
+              <option value="GBA">GBA</option>
+              <option value="MD">MD</option>
+              <option value="CPS1">CPS1</option>
+              <option value="FC">FC</option>
+            </select>
+            <small id="extensionHint"></small>
+          </label>
+
+          <label>
+            <span id="romLabel">ROM / ZIP 游戏包 <b id="romRequired">必填</b></span>
+            <input id="romFile" name="rom" type="file">
+            <small id="romHint">最大 10MB</small>
+          </label>
+
+          <div id="currentRom" class="current-file hidden">
+            <div class="current-file-main">
+              <strong>当前 ROM</strong>
+              <span id="currentRomName"></span>
+              <small id="currentRomMeta"></small>
+            </div>
+            <a id="currentRomLink" href="#" target="_blank" rel="noreferrer">下载当前 ROM</a>
+          </div>
+
+          <label>
+            <span>游戏海报 <b class="muted">可选</b></span>
+            <input id="coverFile" name="cover" type="file" accept="image/jpeg,image/png,image/webp">
+            <small id="coverHint">JPG / PNG / WebP，最大 2MB</small>
+          </label>
+
+          <div id="coverPreviewWrap" class="cover-preview hidden">
+            <img id="coverPreview" alt="海报预览">
+            <div>
+              <strong>海报预览</strong>
+              <span id="coverPreviewMeta"></span>
+            </div>
+          </div>
+
+          <div id="selectedCover" class="selected-cover hidden"></div>
+
+          <div class="form-actions">
+            <button id="submitButton" class="primary" type="submit">上传并发布</button>
+            <button id="syncButton" class="secondary hidden" type="button">重试推送</button>
+          </div>
+          <div id="uploadProgress" class="progress hidden">
+            <div id="progressBar"></div>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel list-panel">
+        <div class="panel-title list-heading">
+          <div>
+            <p class="eyebrow">CATALOG</p>
+            <div class="heading-with-version">
+              <h2>在线游戏</h2>
+              <span id="catalogVersion" class="version-pill" title="当前分类版本时间">
+                <span class="version-dot"></span>
+                <span id="catalogVersionText">版本读取中…</span>
+              </span>
+            </div>
+            <div class="catalog-repository">
+              <span id="catalogRepositoryLabel">发布仓库</span>
+              <a id="catalogRepositoryLink" href="#" target="_blank" rel="noreferrer">读取中…</a>
+            </div>
+          </div>
+          <span id="gameCount" class="count-pill">0 个游戏</span>
+        </div>
+
+        <div id="typeTabs" class="type-tabs"></div>
+        <div id="gameList" class="game-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="deleteDialog" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="deleteDialogTitle">
+    <div class="modal-card">
+      <p class="eyebrow">DELETE GAME</p>
+      <h2 id="deleteDialogTitle">删除游戏</h2>
+      <p id="deleteDialogText" class="modal-text"></p>
+
+      <div id="deleteConfirmActions" class="modal-actions">
+        <button id="deleteCancelButton" class="secondary" type="button">取消</button>
+        <button id="deleteConfirmButton" class="danger-solid" type="button">确认删除并提交</button>
+      </div>
+
+      <div id="deleteProgressWrap" class="delete-progress hidden">
+        <div class="delete-progress-track">
+          <div id="deleteProgressBar"></div>
+        </div>
+        <p id="deleteProgressText" class="modal-text">正在删除文件并提交到 GitHub...</p>
+      </div>
+
+      <div class="modal-actions">
+        <button id="deleteRetryButton" class="secondary hidden" type="button">重试推送</button>
+        <button id="deleteCloseButton" class="secondary hidden" type="button">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

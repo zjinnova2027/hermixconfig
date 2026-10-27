@@ -1,0 +1,233 @@
+﻿状态,中文名,ROM文件名,MAME描述,区域,类型标记,MAME父组,保留项,原因
+保留,1941 反击战（世界版 900227）,1941.zip,1941: Counter Attack (World 900227),World,,1941,1941.zip,世界版首选
+差,1941 反击战（日版）,1941j.zip,1941: Counter Attack (Japan),Japan,,1941,1941.zip,非世界版
+差,1941 反击战（世界版）,1941r1.zip,1941: Counter Attack (World),World,,1941,1941.zip,世界版其他重复版本
+差,1941 反击战（美版 900227）,1941u.zip,1941: Counter Attack (USA 900227),USA,,1941,1941.zip,非世界版
+保留,三个奇迹（世界版 910520）,3wonders.zip,Three Wonders (World 910520),World,,3wonders,3wonders.zip,世界版首选
+差,三个奇迹（世界版 910513）,3wondersr1.zip,Three Wonders (World 910513),World,,3wonders,3wonders.zip,世界版其他重复版本
+差,三个奇迹（美版 910520）,3wondersu.zip,Three Wonders (USA 910520),USA,,3wonders,3wonders.zip,非世界版
+差,三个奇迹（日版）,wonder3.zip,Wonder 3 (Japan 910520),Japan,,3wonders,3wonders.zip,非世界版
+保留,名将（世界版 911202）,captcomm.zip,Captain Commando (World 911202),World,,captcomm,captcomm.zip,世界版首选
+差,名将（日版 911202）,captcommj.zip,Captain Commando (Japan 911202),Japan,,captcomm,captcomm.zip,非世界版
+差,名将（日版 910928）,captcommjr1.zip,Captain Commando (Japan 910928),Japan,,captcomm,captcomm.zip,非世界版
+差,名将（世界版 911014）,captcommr1.zip,Captain Commando (World 911014),World,,captcomm,captcomm.zip,世界版其他重复版本
+差,名将（美版 910928）,captcommu.zip,Captain Commando (USA 910928),USA,,captcomm,captcomm.zip,非世界版
+保留,雌虎战机（世界版 901012）,cawing.zip,Carrier Air Wing (World 901012),World,,cawing,cawing.zip,世界版首选
+差,雌虎战机（日版）,cawingj.zip,U.S. Navy (Japan 901012),Japan,,cawing,cawing.zip,非世界版
+差,雌虎战机（日版 重售版）,cawingjr.zip,U.S. Navy (Japan Resale Ver. 901130),Japan,,cawing,cawing.zip,非世界版
+差,雌虎战机（世界版 901009）,cawingr1.zip,Carrier Air Wing (World 901009),World,,cawing,cawing.zip,世界版其他重复版本
+差,雌虎战机（美版 901130）,cawingu.zip,Carrier Air Wing (USA 901130),USA,,cawing,cawing.zip,非世界版
+差,雌虎战机（美版 901012）,cawingur1.zip,Carrier Air Wing (USA 901012),USA,,cawing,cawing.zip,非世界版
+保留,卡普空世界2 冒险问答（日版 920611）,cworld2j.zip,Adventure Quiz Capcom World 2 (Japan 920611),World,,cworld2j,cworld2j.zip,世界版首选
+差,卡普空世界2 冒险问答（日版 920611，B板 90629B-3，无电池版）,cworld2ja.zip,"Adventure Quiz Capcom World 2 (Japan 920611, B-Board 90629B-3, no battery)",World,,cworld2j,cworld2j.zip,世界版其他重复版本
+差,卡普空世界2 冒险问答（日版 920611，B板 91634B-2）,cworld2jb.zip,"Adventure Quiz Capcom World 2 (Japan 920611, B-Board 91634B-2)",World,,cworld2j,cworld2j.zip,世界版其他重复版本
+保留,恐龙快打（世界版 930201）,dino.zip,Cadillacs and Dinosaurs (World 930201),World,,dino,dino.zip,世界版首选
+差,恐龙快打（台湾版 930223）,dinoa.zip,Cadillacs and Dinosaurs (Asia TW 930223),Asia,,dino,dino.zip,非世界版
+差,恐龙快打 恐龙猎人（中文盗版）,dinohunt.zip,Dinosaur Hunter (Chinese bootleg of Cadillacs and Dinosaurs),Other,盗版,dino,dino.zip,改版/盗版
+差,恐龙快打（日版 930201）,dinoj.zip,Cadillacs: Kyouryuu Shin Seiki (Japan 930201),Japan,,dino,dino.zip,非世界版
+差,恐龙快打（美版 930201）,dinou.zip,Cadillacs and Dinosaurs (USA 930201),USA,,dino,dino.zip,非世界版
+保留,吞食天地（美版，B板 89624B-?）,dynwar.zip,"Dynasty Wars (USA, B-Board 89624B-?)",USA,,dynwar,dynwar.zip,无世界版，美版首选
+差,吞食天地（美版，B板 88622B-3）,dynwara.zip,"Dynasty Wars (USA, B-Board 88622B-3)",USA,,dynwar,dynwar.zip,非首选美版
+差,吞食天地（日版）,dynwarj.zip,Tenchi wo Kurau (Japan),Japan,,dynwar,dynwar.zip,非首选美版
+差,吞食天地（日版 重售版）,dynwarjr.zip,Tenchi wo Kurau (Japan Resale Ver.),Japan,,dynwar,dynwar.zip,非首选美版
+保留,快打旋风（世界版，第1套）,ffight.zip,"Final Fight (World, set 1)",World,,ffight,ffight.zip,世界版首选
+差,快打旋风（世界版，第2套）,ffighta.zip,"Final Fight (World, set 2)",World,,ffight,ffight.zip,世界版其他重复版本
+差,快打旋风（世界版，改版）,ffightae.zip,"Final Fight 30th Anniversary Edition (World, hack)",World,改版,ffight,ffight.zip,改版/盗版
+差,快打旋风（日版）,ffightj.zip,Final Fight (Japan),Japan,,ffight,ffight.zip,非世界版
+差,快打旋风（日版 900112）,ffightj1.zip,Final Fight (Japan 900112),Japan,,ffight,ffight.zip,非世界版
+差,快打旋风（日版 900305）,ffightj2.zip,Final Fight (Japan 900305),Japan,,ffight,ffight.zip,非世界版
+差,快打旋风（日版 900405）,ffightj3.zip,Final Fight (Japan 900405),Japan,,ffight,ffight.zip,非世界版
+差,快打旋风（日版 900613）,ffightj4.zip,Final Fight (Japan 900613),Japan,,ffight,ffight.zip,非世界版
+差,快打旋风（日版，改版）,ffightjh.zip,"Street Smart / Final Fight (Japan, hack)",Japan,改版,ffight,ffight.zip,改版/盗版
+差,快打旋风（美版，第1套）,ffightu.zip,"Final Fight (USA, set 1)",USA,,ffight,ffight.zip,非世界版
+差,快打旋风（美版，第2套）,ffightu1.zip,"Final Fight (USA, set 2)",USA,,ffight,ffight.zip,非世界版
+差,快打旋风（美版 900112）,ffightua.zip,Final Fight (USA 900112),USA,,ffight,ffight.zip,非世界版
+差,快打旋风（美版 900424）,ffightub.zip,Final Fight (USA 900424),USA,,ffight,ffight.zip,非世界版
+差,快打旋风（美版 900613）,ffightuc.zip,Final Fight (USA 900613),USA,,ffight,ffight.zip,非世界版
+保留,失落的世界（世界版，新版）,forgottn.zip,"Forgotten Worlds (World, newer)",World,,forgottn,forgottn.zip,世界版首选
+差,失落的世界（世界版）,forgottna.zip,Forgotten Worlds (World),World,,forgottn,forgottn.zip,世界版其他重复版本
+差,失落的世界（日版 英文原型版）,forgottnj.zip,Forgotten Worlds (Japan) (English prototype),World,原型,forgottn,forgottn.zip,世界版其他重复版本
+差,失落的世界（美版，B板 88621B-2，修订 C）,forgottnu.zip,"Forgotten Worlds (USA, B-Board 88621B-2, Rev. C)",World,,forgottn,forgottn.zip,世界版其他重复版本
+差,失落的世界（美版，B板 88618B-2，修订 A）,forgottnua.zip,"Forgotten Worlds (USA, B-Board 88618B-2, Rev. A)",World,,forgottn,forgottn.zip,世界版其他重复版本
+差,失落的世界（美版，B板 88618B-2，修订 AA）,forgottnuaa.zip,"Forgotten Worlds (USA, B-Board 88618B-2, Rev. AA)",World,,forgottn,forgottn.zip,世界版其他重复版本
+差,失落的世界（美版，B板 88618B-2，修订 C）,forgottnuc.zip,"Forgotten Worlds (USA, B-Board 88618B-2, Rev. C)",World,,forgottn,forgottn.zip,世界版其他重复版本
+差,失落的世界（美版，B板 88618B-2，修订 E）,forgottnue.zip,"Forgotten Worlds (USA, B-Board 88618B-2, Rev. E)",World,,forgottn,forgottn.zip,世界版其他重复版本
+差,失落的世界（日版）,lostwrld.zip,Lost Worlds (Japan),World,,forgottn,forgottn.zip,世界版其他重复版本
+差,失落的世界（日版 旧版）,lostwrldo.zip,Lost Worlds (Japan Old Ver.),World,,forgottn,forgottn.zip,世界版其他重复版本
+保留,加油！海洋君（日版 2K0411）,ganbare.zip,Ganbare! Marine Kun (Japan 2K0411),Japan,,ganbare,ganbare.zip,无世界版/美版，日版首选
+差,大魔界村（日版）,daimakai.zip,Daimakaimura (Japan),Japan,,ghouls,ghouls.zip,非世界版
+差,大魔界村（日版 重售版）,daimakair.zip,Daimakaimura (Japan Resale Ver.),Japan,,ghouls,ghouls.zip,非世界版
+保留,大魔界村（世界版）,ghouls.zip,Ghouls'n Ghosts (World),World,,ghouls,ghouls.zip,世界版首选
+差,大魔界村（美版）,ghoulsu.zip,Ghouls'n Ghosts (USA),USA,,ghouls,ghouls.zip,非世界版
+保留,咕噜啪！（日版 931220 L，原型版）,gulunpa.zip,Gulun.Pa! (Japan 931220 L) (prototype),Japan,原型,gulunpa,gulunpa.zip,唯一可用版本（原型）
+保留,圆桌骑士（世界版 911127）,knights.zip,Knights of the Round (World 911127),World,,knights,knights.zip,世界版首选
+差,圆桌骑士（日版 911127，B板 91634B-2）,knightsj.zip,"Knights of the Round (Japan 911127, B-Board 91634B-2)",Japan,,knights,knights.zip,非世界版
+差,圆桌骑士（日版 911127，B板 89625B-1）,knightsja.zip,"Knights of the Round (Japan 911127, B-Board 89625B-1)",Japan,,knights,knights.zip,非世界版
+差,圆桌骑士（美版 911127）,knightsu.zip,Knights of the Round (USA 911127),USA,,knights,knights.zip,非世界版
+保留,龙王（世界版 910805）,kod.zip,The King of Dragons (World 910805),World,,kod,kod.zip,世界版首选
+差,龙王（日版 910805，B板 90629B-3）,kodj.zip,"The King of Dragons (Japan 910805, B-Board 90629B-3)",Japan,,kod,kod.zip,非世界版
+差,龙王（日版 910805，B板 89625B-1）,kodja.zip,"The King of Dragons (Japan 910805, B-Board 89625B-1)",Japan,,kod,kod.zip,非世界版
+差,龙王（世界版 910711）,kodr1.zip,The King of Dragons (World 910711),World,,kod,kod.zip,世界版其他重复版本
+差,龙王（世界版 910731）,kodr2.zip,The King of Dragons (World 910731),World,,kod,kod.zip,世界版其他重复版本
+差,龙王（美版 910910）,kodu.zip,The King of Dragons (USA 910910),USA,,kod,kod.zip,非世界版
+保留,肌肉炸弹人 双人版（世界版 931206）,mbombrd.zip,Muscle Bomber Duo: Ultimate Team Battle (World 931206),World,,mbombrd,mbombrd.zip,世界版首选
+差,肌肉炸弹人 双人版 热血勇士（日版）,mbombrdj.zip,Muscle Bomber Duo: Heat Up Warriors (Japan 931206),Japan,,mbombrd,mbombrd.zip,非世界版
+保留,洛克人 力量对决（CPS1，美版 951006）,megaman.zip,"Mega Man: The Power Battle (CPS1, USA 951006)",USA,,megaman,megaman.zip,无世界版，美版首选
+差,洛克人 力量对决（CPS1，亚洲版 951006）,megamana.zip,"Mega Man: The Power Battle (CPS1, Asia 951006)",Asia,,megaman,megaman.zip,非首选美版
+差,洛克人 力量对决（日版）,rockmanj.zip,"Rockman: The Power Battle (CPS1, Japan 950922)",Japan,,megaman,megaman.zip,非首选美版
+保留,战场之狼2（世界版 900302）,mercs.zip,Mercs (World 900302),World,,mercs,mercs.zip,世界版首选
+差,战场之狼2（日版 900302）,mercsj.zip,Senjou no Ookami II (Japan 900302),Japan,,mercs,mercs.zip,非世界版
+差,战场之狼2（美版 900608）,mercsu.zip,Mercs (USA 900608),USA,,mercs,mercs.zip,非世界版
+差,战场之狼2（美版 900302）,mercsur1.zip,Mercs (USA 900302),USA,,mercs,mercs.zip,非世界版
+保留,魔法南瓜 布罗兰大冒险（日版 960712）,mpumpkin.zip,Magical Pumpkin: Puroland de Daibouken (Japan 960712),Japan,,mpumpkin,mpumpkin.zip,无世界版/美版，日版首选
+保留,魔剑（世界版 900725）,msword.zip,Magic Sword: Heroic Fantasy (World 900725),World,,msword,msword.zip,世界版首选
+差,魔剑（日版 900623）,mswordj.zip,Magic Sword: Heroic Fantasy (Japan 900623),Japan,,msword,msword.zip,非世界版
+差,魔剑（世界版 900623）,mswordr1.zip,Magic Sword: Heroic Fantasy (World 900623),World,,msword,msword.zip,世界版其他重复版本
+差,魔剑（美版 900725）,mswordu.zip,Magic Sword: Heroic Fantasy (USA 900725),USA,,msword,msword.zip,非世界版
+差,小和尚（日版）,chikij.zip,Chiki Chiki Boys (Japan 900619),Japan,,mtwins,mtwins.zip,非世界版
+保留,小和尚（世界版 900619）,mtwins.zip,Mega Twins (World 900619),World,,mtwins,mtwins.zip,世界版首选
+保留,小尼莫（世界版 901130）,nemo.zip,Nemo (World 901130),World,,nemo,nemo.zip,世界版首选
+差,小尼莫（日版 901120，88622B-3 ROM板）,nemoj.zip,"Nemo (Japan 901120, 88622B-3 ROM board)",Japan,,nemo,nemo.zip,非世界版
+差,小尼莫（日版 901120，89625B-1 ROM板）,nemoja.zip,"Nemo (Japan 901120, 89625B-1 ROM board)",Japan,,nemo,nemo.zip,非世界版
+差,小尼莫（世界版 901109）,nemor1.zip,Nemo (World 901109),World,,nemo,nemo.zip,世界版其他重复版本
+差,泡泡龙3（欧洲版 950601）,pang3.zip,Pang! 3 (Europe 950601),Europe,,pang3,pang3j.zip,非首选日版
+保留,泡泡龙3（日版 950511）,pang3j.zip,Pang! 3: Kaitou Tachi no Karei na Gogo (Japan 950511),Japan,,pang3,pang3j.zip,无世界版/美版，日版首选
+差,泡泡龙3（欧洲版 950511）,pang3r1.zip,Pang! 3 (Europe 950511),Europe,,pang3,pang3j.zip,非首选日版
+保留,普尼基（日版 940608）,pnickj.zip,Pnickies (Japan 940608),Japan,,pnickj,pnickj.zip,无世界版/美版，日版首选
+保留,波可喵 气球（日版 940322）,pokonyan.zip,Pokonyan! Balloon (Japan 940322),Japan,,pokonyan,pokonyan.zip,无世界版/美版，日版首选
+保留,惩罚者（世界版 930422）,punisher.zip,The Punisher (World 930422),World,,punisher,punisher.zip,世界版首选
+差,惩罚者 飙风战警（中文盗版）,punisherbz.zip,Biaofeng Zhanjing (Chinese bootleg of The Punisher),Other,盗版,punisher,punisher.zip,改版/盗版
+差,惩罚者（西班牙语版 930422）,punisherh.zip,The Punisher (Hispanic 930422),Hispanic,,punisher,punisher.zip,非世界版
+差,惩罚者（日版 930422）,punisherj.zip,The Punisher (Japan 930422),Japan,,punisher,punisher.zip,非世界版
+差,惩罚者（美版 930422）,punisheru.zip,The Punisher (USA 930422),USA,,punisher,punisher.zip,非世界版
+保留,问答与龙 卡普空问答游戏（美版 920701）,qad.zip,Quiz & Dragons: Capcom Quiz Game (USA 920701),USA,,qad,qad.zip,无世界版，美版首选
+差,问答与龙 卡普空问答游戏（日版 重售版 940921）,qadjr.zip,Quiz & Dragons: Capcom Quiz Game (Japan Resale Ver. 940921),Japan,,qad,qad.zip,非首选美版
+差,QSound 音效芯片,qsound.zip,QSound,Other,,qsound,qsound.zip,按要求删除
+保留,问答 殿样之野望2 全国版（日版 950123）,qtono2j.zip,Quiz Tonosama no Yabou 2: Zenkoku-ban (Japan 950123),Japan,,qtono2j,qtono2j.zip,无世界版/美版，日版首选
+保留,街头霸王2 世界勇士（世界版 910522）,sf2.zip,Street Fighter II: The World Warrior (World 910522),World,,sf2,sf2.zip,世界版首选
+差,街头霸王2 世界勇士（盗版，第1套）,sf2b.zip,"Street Fighter II: The World Warrior (bootleg, set 1)",World,盗版,sf2,sf2.zip,改版/盗版
+差,街头霸王2 世界勇士（盗版，第2套）,sf2b2.zip,"Street Fighter II: The World Warrior (bootleg, set 2)",World,盗版,sf2,sf2.zip,改版/盗版
+差,街头霸王2 世界勇士（世界版 910204）,sf2ea.zip,Street Fighter II: The World Warrior (World 910204),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（世界版 910214）,sf2eb.zip,Street Fighter II: The World Warrior (World 910214),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（TAB奥地利，盗版，第1套）,sf2ebbl.zip,"Street Fighter II: The World Warrior (TAB Austria, bootleg, set 1)",World,盗版,sf2,sf2.zip,改版/盗版
+差,街头霸王2 世界勇士（TAB奥地利，盗版，第3套）,sf2ebbl2.zip,"Street Fighter II: The World Warrior (TAB Austria, bootleg, set 3)",World,盗版,sf2,sf2.zip,改版/盗版
+差,街头霸王2 世界勇士（TAB奥地利，盗版，第4套）,sf2ebbl3.zip,"Street Fighter II: The World Warrior (TAB Austria, bootleg, set 4)",World,盗版,sf2,sf2.zip,改版/盗版
+差,街头霸王2 世界勇士（世界版 910318）,sf2ed.zip,Street Fighter II: The World Warrior (World 910318),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（世界版 910228）,sf2ee.zip,Street Fighter II: The World Warrior (World 910228),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（世界版 910411）,sf2ef.zip,Street Fighter II: The World Warrior (World 910411),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（世界版 910129）,sf2em.zip,Street Fighter II: The World Warrior (World 910129),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（世界版 910204，转换版）,sf2en.zip,"Street Fighter II: The World Warrior (World 910204, conversion)",World,转换版,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（日版 911210，CPS-B-13）,sf2j.zip,"Street Fighter II: The World Warrior (Japan 911210, CPS-B-13)",World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（日版 911210，CPS-B-17）,sf2j17.zip,"Street Fighter II: The World Warrior (Japan 911210, CPS-B-17)",World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（日版 910214）,sf2ja.zip,Street Fighter II: The World Warrior (Japan 910214),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（日版 910306）,sf2jc.zip,Street Fighter II: The World Warrior (Japan 910306),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（日版 910411）,sf2jf.zip,Street Fighter II: The World Warrior (Japan 910411),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（日版 910522）,sf2jh.zip,Street Fighter II: The World Warrior (Japan 910522),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（日版 920312）,sf2jl.zip,Street Fighter II: The World Warrior (Japan 920312),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（Quicken第1部，盗版）,sf2qp1.zip,"Street Fighter II: The World Warrior (Quicken Pt-I, bootleg)",World,盗版,sf2,sf2.zip,改版/盗版
+差,街头霸王2 世界勇士（Quicken，盗版）,sf2qp2.zip,"Street Fighter II: The World Warrior (Quicken, bootleg)",World,盗版,sf2,sf2.zip,改版/盗版
+差,街头霸王2 世界勇士（RK，盗版）,sf2rk.zip,"Street Fighter II: The World Warrior (RK, bootleg)",World,盗版,sf2,sf2.zip,改版/盗版
+差,街头霸王2 世界勇士（盗版 带规则画面）,sf2rules.zip,Street Fighter II: The World Warrior (bootleg with rules screen),World,盗版,sf2,sf2.zip,改版/盗版
+差,街头霸王2 世界勇士（TAB奥地利，盗版，第2套）,sf2stt.zip,"Street Fighter II: The World Warrior (TAB Austria, bootleg, set 2)",World,盗版,sf2,sf2.zip,改版/盗版
+差,街头霸王2 世界勇士（Thunder Edition 盗版 第1套）,sf2thndr.zip,"Street Fighter II: The World Warrior (Thunder Edition, bootleg, set 1)",World,盗版,sf2,sf2.zip,改版/盗版
+差,街头霸王2 世界勇士（Thunder Edition 盗版 第2套）,sf2thndr2.zip,"Street Fighter II: The World Warrior (Thunder Edition, bootleg, set 2)",World,盗版,sf2,sf2.zip,改版/盗版
+差,街头霸王2 世界勇士（美版 910206）,sf2ua.zip,Street Fighter II: The World Warrior (USA 910206),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（美版 910214）,sf2ub.zip,Street Fighter II: The World Warrior (USA 910214),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（美版 910306）,sf2uc.zip,Street Fighter II: The World Warrior (USA 910306),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（美版 910318）,sf2ud.zip,Street Fighter II: The World Warrior (USA 910318),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（美版 910228）,sf2ue.zip,Street Fighter II: The World Warrior (USA 910228),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（美版 910411）,sf2uf.zip,Street Fighter II: The World Warrior (USA 910411),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（美版 910522，修订 G）,sf2ug.zip,"Street Fighter II: The World Warrior (USA 910522, Rev. G)",World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（美版 910522，修订 H）,sf2uh.zip,"Street Fighter II: The World Warrior (USA 910522, Rev. H)",World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（美版 910522，修订 I）,sf2ui.zip,"Street Fighter II: The World Warrior (USA 910522, Rev. I)",World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（美版 911101）,sf2uk.zip,Street Fighter II: The World Warrior (USA 911101),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 世界勇士（美版 920312）,sf2um.zip,Street Fighter II: The World Warrior (USA 920312),World,,sf2,sf2.zip,世界版其他重复版本
+差,街头霸王2 冠军版（加速器，盗版，第1套）,sf2acc.zip,"Street Fighter II': Champion Edition (Accelerator!, bootleg, set 1)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（加速器，盗版，第2套）,sf2acca.zip,"Street Fighter II': Champion Edition (Accelerator!, bootleg, set 2)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（加速器第2部，盗版）,sf2accp2.zip,"Street Fighter II': Champion Edition (Accelerator Pt.II, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（Alpha Magic-F，盗版）,sf2amf.zip,"Street Fighter II': Champion Edition (Alpha Magic-F, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（L735测试ROM，盗版，第1套）,sf2amf2.zip,"Street Fighter II': Champion Edition (L735 Test Rom, bootleg, set 1)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（L735测试ROM，盗版，第2套）,sf2amf3.zip,"Street Fighter II': Champion Edition (L735 Test Rom, bootleg, set 2)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（洪熙，盗版）,sf2bhh.zip,"Street Fighter II': Champion Edition (Hung Hsi, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+保留,街头霸王2 冠军版（世界版 920513）,sf2ce.zip,Street Fighter II': Champion Edition (World 920513),World,,sf2ce,sf2ce.zip,世界版首选
+差,街头霸王2 冠军版（Playmark 盗版，第1套）,sf2ceb.zip,"Street Fighter II': Champion Edition (Playmark bootleg, set 1)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（盗版，第1套）,sf2ceb2.zip,"Street Fighter II': Champion Edition (bootleg, set 1)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（盗版，第2套）,sf2ceb3.zip,"Street Fighter II': Champion Edition (bootleg, set 2)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（Playmark 盗版，第2套）,sf2ceb4.zip,"Street Fighter II': Champion Edition (Playmark bootleg, set 2)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（Playmark 盗版，第3套）,sf2ceb5.zip,"Street Fighter II': Champion Edition (Playmark bootleg, set 3)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（保护版 盗版 非Dash板）,sf2ceblp.zip,Street Fighter II': Champion Edition (protected bootleg on non-dash board),Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（台湾版 盗版 带PAL）,sf2cebltw.zip,Street Fighter II': Champion Edition ('Taiwan' bootleg with PAL),Taiwan,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（Dstreet-6，盗版）,sf2ceds6.zip,"Street Fighter II': Champion Edition (Dstreet-6, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（世界版 920313）,sf2ceea.zip,Street Fighter II': Champion Edition (World 920313),World,,sf2ce,sf2ce.zip,世界版其他重复版本
+差,街头霸王2 冠军版（世界版 920803）,sf2ceec.zip,Street Fighter II': Champion Edition (World 920803),World,,sf2ce,sf2ce.zip,世界版其他重复版本
+差,街头霸王2 冠军版（日版 920322）,sf2ceja.zip,Street Fighter II': Champion Edition (Japan 920322),Japan,,sf2ce,sf2ce.zip,非世界版
+差,街头霸王2 冠军版（日版 920513）,sf2cejb.zip,Street Fighter II': Champion Edition (Japan 920513),Japan,,sf2ce,sf2ce.zip,非世界版
+差,街头霸王2 冠军版（日版 920803）,sf2cejc.zip,Street Fighter II': Champion Edition (Japan 920803),Japan,,sf2ce,sf2ce.zip,非世界版
+差,街头霸王2 冠军版（Mstreet-6，盗版，第1套）,sf2cems6a.zip,"Street Fighter II': Champion Edition (Mstreet-6, bootleg, set 1)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（Mstreet-6，盗版，第2套）,sf2cems6b.zip,"Street Fighter II': Champion Edition (Mstreet-6, bootleg, set 2)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（Mstreet-6，盗版，第3套）,sf2cems6c.zip,"Street Fighter II': Champion Edition (Mstreet-6, bootleg, set 3)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（台湾版 920313）,sf2cet.zip,Street Fighter II': Champion Edition (Taiwan 920313),Taiwan,,sf2ce,sf2ce.zip,非世界版
+差,街头霸王2 冠军版（美版 920313）,sf2ceua.zip,Street Fighter II': Champion Edition (USA 920313),USA,,sf2ce,sf2ce.zip,非世界版
+差,街头霸王2 冠军版（美版 920513）,sf2ceub.zip,Street Fighter II': Champion Edition (USA 920513),USA,,sf2ce,sf2ce.zip,非世界版
+差,街头霸王2 冠军版（美版 920803）,sf2ceuc.zip,Street Fighter II': Champion Edition (USA 920803),USA,,sf2ce,sf2ce.zip,非世界版
+差,街头霸王2 冠军版（日版 920322 UPL盗版）,sf2ceupl.zip,"Street Fighter II': Champion Edition (Japan 920322, UPL bootleg?)",Japan,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（双重KO Turbo II，盗版）,sf2dkot2.zip,"Street Fighter II': Champion Edition (Double K.O. Turbo II, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（东方不败保护盗版）,sf2dongb.zip,"Street Fighter II': Champion Edition (Dongfang Bubai protection, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（降龙中文盗版）,sf2koryu.zip,"Street Fighter II': Champion Edition (Xiang Long, Chinese bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（盗版 可选关版）,sf2level.zip,Street Fighter II': Champion Edition (bootleg with level selection),Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（M1，盗版）,sf2m1.zip,"Street Fighter II': Champion Edition (M1, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（M2，盗版）,sf2m2.zip,"Street Fighter II': Champion Edition (M2, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（M3，盗版）,sf2m3.zip,"Street Fighter II': Champion Edition (M3, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（M4，盗版）,sf2m4.zip,"Street Fighter II': Champion Edition (M4, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（M5，盗版）,sf2m5.zip,"Street Fighter II': Champion Edition (M5, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（M6，盗版）,sf2m6.zip,"Street Fighter II': Champion Edition (M6, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（M7，盗版）,sf2m7.zip,"Street Fighter II': Champion Edition (M7, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（M8，盗版）,sf2m8.zip,"Street Fighter II': Champion Edition (M8, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（M9，盗版）,sf2m9.zip,"Street Fighter II': Champion Edition (M9, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（M10，盗版）,sf2m10.zip,"Street Fighter II': Champion Edition (M10, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（盗版，第1套）,sf2mdt.zip,"Street Fighter II': Magic Delta Turbo (bootleg, set 1)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（盗版，第2套）,sf2mdta.zip,"Street Fighter II': Magic Delta Turbo (bootleg, set 2)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（盗版，第3套）,sf2mdtb.zip,"Street Fighter II': Magic Delta Turbo (bootleg, set 3)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（魔法KO Turbo 梦魇破解版）,sf2mkot.zip,Street Fighter II': Magic KO Turbo!! - Nightmare Crack,Other,,sf2ce,sf2ce.zip,非世界版
+差,街头霸王2 冠军版（彩虹，盗版，第1套）,sf2rb.zip,"Street Fighter II': Champion Edition (Rainbow, bootleg, set 1)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（彩虹，盗版，第2套）,sf2rb2.zip,"Street Fighter II': Champion Edition (Rainbow, bootleg, set 2)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（彩虹，盗版，第3套）,sf2rb3.zip,"Street Fighter II': Champion Edition (Rainbow, bootleg, set 3)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（RE，盗版）,sf2re.zip,"Street Fighter II': Champion Edition (RE, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（红浪，盗版，第1套）,sf2red.zip,"Street Fighter II': Champion Edition (Red Wave, bootleg, set 1)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（红浪，盗版，第2套）,sf2reda.zip,"Street Fighter II': Champion Edition (Red Wave, bootleg, set 2)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（红浪第2部，盗版）,sf2redp2.zip,"Street Fighter II': Champion Edition (Red Wave PtII, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（V004，盗版）,sf2v004.zip,"Street Fighter II': Champion Edition (V004, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+差,街头霸王2 冠军版（YYC，盗版）,sf2yyc.zip,"Street Fighter II': Champion Edition (YYC, bootleg)",Other,盗版,sf2ce,sf2ce.zip,改版/盗版
+保留,街头霸王2 极速版（世界版 921209）,sf2hf.zip,Street Fighter II': Hyper Fighting (World 921209),World,,sf2hf,sf2hf.zip,世界版首选
+差,街头霸王2 极速版（日版 921209）,sf2hfj.zip,Street Fighter II' Turbo: Hyper Fighting (Japan 921209),Japan,,sf2hf,sf2hf.zip,非世界版
+差,街头霸王2 极速版（美版 921209）,sf2hfu.zip,Street Fighter II': Hyper Fighting (USA 921209),USA,,sf2hf,sf2hf.zip,非世界版
+差,街头霸王Alpha 勇士之梦（CPS Changer版 宣传版 美版）,sfach.zip,"Street Fighter Alpha: Warriors' Dreams (CPS Changer, Publicity USA 950727)",USA,宣传版,sfzch,sfzch.zip,非首选日版
+差,街头霸王Zero（CPS Changer版 巴西版）,sfzbch.zip,"Street Fighter Zero (CPS Changer, Brazil 950727)",Brazil,,sfzch,sfzch.zip,非首选日版
+保留,街头霸王Zero（CPS Changer版 日版 951020）,sfzch.zip,"Street Fighter Zero (CPS Changer, Japan 951020)",Japan,,sfzch,sfzch.zip,无世界版/美版，日版首选
+差,肌肉炸弹人 身体爆炸（日版）,mbomberj.zip,Muscle Bomber: The Body Explosion (Japan 930713),Japan,,slammast,slammast.zip,非世界版
+保留,周末夜摔跤霸王（世界版 930713）,slammast.zip,Saturday Night Slam Masters (World 930713),World,,slammast,slammast.zip,世界版首选
+差,周末夜摔跤霸王（美版 930713）,slammastu.zip,Saturday Night Slam Masters (USA 930713),USA,,slammast,slammast.zip,非世界版
+保留,出击飞龙（美版，B板 89624B-2）,strider.zip,"Strider (USA, B-Board 89624B-2)",USA,,strider,strider.zip,无世界版，美版首选
+差,出击飞龙（日版）,striderj.zip,Strider Hiryu (Japan),Japan,,strider,strider.zip,非首选美版
+差,出击飞龙（日版 重售版）,striderjr.zip,Strider Hiryu (Japan Resale Ver.),Japan,,strider,strider.zip,非首选美版
+差,出击飞龙（美版，B板 89624B-3）,striderua.zip,"Strider (USA, B-Board 89624B-3)",USA,,strider,strider.zip,非首选美版
+差,出击飞龙（美版 B板 90629B-3 街头霸王2转换故障版）,strideruc.zip,"Strider (USA, B-Board 90629B-3, buggy Street Fighter II conversion)",USA,转换版,strider,strider.zip,非首选美版
+差,联合大作战（日版）,area88.zip,Area 88 (Japan),Japan,,unsquad,unsquad.zip,非首选美版
+差,联合大作战（日版 重售版）,area88r.zip,Area 88 (Japan Resale Ver.),Japan,,unsquad,unsquad.zip,非首选美版
+保留,联合大作战（美版）,unsquad.zip,U.N. Squadron (USA),USA,,unsquad,unsquad.zip,无世界版，美版首选
+保留,威虎战机（世界版 920714）,varth.zip,Varth: Operation Thunderstorm (World 920714),World,,varth,varth.zip,世界版首选
+差,威虎战机（日版 920714）,varthj.zip,Varth: Operation Thunderstorm (Japan 920714),Japan,,varth,varth.zip,非世界版
+差,威虎战机（日版 重售版 920714）,varthjr.zip,Varth: Operation Thunderstorm (Japan Resale Ver. 920714),Japan,,varth,varth.zip,非世界版
+差,威虎战机（世界版 920612）,varthr1.zip,Varth: Operation Thunderstorm (World 920612),World,,varth,varth.zip,世界版其他重复版本
+差,威虎战机（美版 920612）,varthu.zip,Varth: Operation Thunderstorm (USA 920612),USA,,varth,varth.zip,非世界版
+保留,威洛（世界版）,willow.zip,Willow (World),World,,willow,willow.zip,世界版首选
+差,威洛（日版）,willowj.zip,Willow (Japan),Japan,,willow,willow.zip,非世界版
+差,威洛（美版）,willowu.zip,Willow (USA),USA,,willow,willow.zip,非世界版
+差,威洛（美版 旧版）,willowuo.zip,Willow (USA Old Ver.),USA,,willow,willow.zip,非世界版
+保留,三国志2 赤壁之战（世界版 921031）,wof.zip,Warriors of Fate (World 921031),World,,wof,wof.zip,世界版首选
+差,三国志2 赤壁之战（亚洲版）,wofa.zip,Sangokushi II (Asia 921005),Asia,,wof,wof.zip,非世界版
+差,三国志2 火凤凰（中文盗版）,wofhfh.zip,Huo Feng Huang (Chinese bootleg of Sangokushi II),Other,盗版,wof,wof.zip,改版/盗版
+差,三国志2 赤壁之战（日版）,wofj.zip,Tenchi wo Kurau II: Sekiheki no Tatakai (Japan 921031),Japan,,wof,wof.zip,非世界版
+差,三国志2 赤壁之战（世界版 921002）,wofr1.zip,Warriors of Fate (World 921002),World,,wof,wof.zip,世界版其他重复版本
+差,三国志2 赤壁之战（美版 921031）,wofu.zip,Warriors of Fate (USA 921031),USA,,wof,wof.zip,非世界版
+保留,吞食天地2 赤壁之战 CPS Changer（日版 CPS Changer）,wofch.zip,"Tenchi wo Kurau II: Sekiheki no Tatakai (CPS Changer, Japan 921031)",Japan,,wofch,wofch.zip,无世界版/美版，日版首选

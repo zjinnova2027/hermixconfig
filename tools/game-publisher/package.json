@@ -1,0 +1,22 @@
+{
+  "name": "game-list-publisher",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local uploader for the public game_list catalog",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "busboy": "^1.6.0",
+    "express": "^5.1.0",
+    "yauzl": "^3.4.0"
+  },
+  "devDependencies": {
+    "yazl": "^3.3.1"
+  }
+}

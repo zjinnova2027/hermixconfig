@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>仓库管理 · Game List Publisher</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">REPOSITORIES</p>
+        <h1>仓库管理</h1>
+        <p class="subtitle">查看分类仓库，并把单个分类安全迁移到新的空仓库。</p>
+      </div>
+      <div class="topbar-actions">
+        <a class="nav-link" href="/">返回游戏管理</a>
+        <div class="repo-card">
+          <span>总库</span>
+          <a id="mainRepoLink" href="#" target="_blank" rel="noreferrer">读取中...</a>
+          <code id="mainRepoMeta">gamelist</code>
+        </div>
+      </div>
+    </header>
+
+    <div id="notice" class="notice hidden" role="status"></div>
+
+    <section class="panel repository-panel">
+      <div class="panel-title">
+        <div>
+          <p class="eyebrow">OVERVIEW</p>
+          <h2>当前仓库</h2>
+        </div>
+        <span class="count-pill" id="repositoryCount">0 个仓库</span>
+      </div>
+      <div id="repositoryCards" class="repository-grid"></div>
+    </section>
+
+    <section class="panel repository-panel">
+      <div class="panel-title">
+        <div>
+          <p class="eyebrow">ROUTING</p>
+          <h2>分类仓库配置</h2>
+        </div>
+      </div>
+      <div class="route-table-wrap">
+        <table class="route-table">
+          <thead>
+            <tr>
+              <th>分类</th>
+              <th>当前仓库</th>
+              <th>游戏数</th>
+              <th>版本</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="routeRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="latestJobPanel" class="panel repository-panel hidden">
+      <div class="panel-title">
+        <div>
+          <p class="eyebrow">LATEST TASK</p>
+          <h2>最近的迁移任务</h2>
+        </div>
+      </div>
+      <div id="latestJobSummary"></div>
+    </section>
+  </div>
+
+  <div id="migrationDialog" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="migrationTitle">
+    <div class="migration-modal">
+      <div class="migration-head">
+        <div>
+          <p class="eyebrow">MIGRATION</p>
+          <h2 id="migrationTitle">迁移游戏分类</h2>
+        </div>
+        <button id="migrationCloseButton" class="icon-button" type="button" aria-label="关闭">×</button>
+      </div>
+
+      <div class="migration-steps" id="migrationSteps">
+        <span class="migration-step active" data-step="1"><b>1</b> 填写仓库</span>
+        <span class="migration-step" data-step="2"><b>2</b> 检查环境</span>
+        <span class="migration-step" data-step="3"><b>3</b> 执行迁移</span>
+      </div>
+
+      <div id="migrationError" class="migration-error hidden"></div>
+
+      <div id="migrationFormStep" class="migration-body">
+        <div class="migration-flow-card">
+          <div>
+            <span>迁移分类</span>
+            <strong id="migrationTypeLabel">-</strong>
+          </div>
+          <div class="migration-arrow">→</div>
+          <div>
+            <span>当前仓库</span>
+            <strong id="migrationSourceRepo">-</strong>
+          </div>
+        </div>
+
+        <label>
+          <span>新 GitHub 仓库地址</span>
+          <input id="targetRepositoryUrl" type="text" placeholder="https://github.com/user/game_list_gba">
+          <small>请先在 GitHub 创建仓库。本工具不会自动创建，也不支持合并到已有分类数据。</small>
+        </label>
+
+        <label>
+          <span>目标分支</span>
+          <input id="targetBranch" type="text" value="main">
+        </label>
+
+        <div class="migration-hint">
+          目标仓库必须没有该分类的 <code>catalog</code>、<code>covers</code> 和 <code>roms</code> 数据。
+          本地 clone 目录由服务端自动生成。
+        </div>
+
+        <div class="migration-actions">
+          <button id="cancelMigrationButton" class="secondary" type="button">取消</button>
+          <button id="preflightButton" class="primary" type="button">检查环境</button>
+        </div>
+      </div>
+
+      <div id="migrationCheckStep" class="migration-body hidden">
+        <div id="checkList" class="check-list"></div>
+        <div id="migrationSummary" class="migration-summary"></div>
+        <div class="migration-actions">
+          <button id="backToFormButton" class="secondary" type="button">返回修改</button>
+          <button id="startMigrationButton" class="primary" type="button">开始迁移</button>
+        </div>
+      </div>
+
+      <div id="migrationProgressStep" class="migration-body hidden">
+        <div class="migration-progress-head">
+          <div>
+            <strong id="jobStageLabel">准备迁移</strong>
+            <span id="jobMessage">正在创建迁移任务...</span>
+          </div>
+          <b id="jobProgressText">0%</b>
+        </div>
+        <div class="migration-progress-track"><div id="jobProgressBar"></div></div>
+        <div id="jobSteps" class="job-steps"></div>
+        <div class="job-log-wrap">
+          <strong>执行日志</strong>
+          <div id="jobLog" class="job-log"></div>
+        </div>
+        <div class="migration-actions">
+          <button id="migrationDoneButton" class="secondary hidden" type="button">关闭</button>
+          <button id="restartMigrationButton" class="secondary hidden" type="button">放弃并重新填写</button>
+          <button id="retryMigrationButton" class="primary hidden" type="button">从失败步骤继续</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/repositories.js"></script>
+</body>
+</html>
