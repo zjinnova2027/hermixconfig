@@ -50,14 +50,27 @@
         <div class="client-setting-copy">
           <strong>隐藏游戏界面</strong>
           <p>开启后，客户端会隐藏正常游戏界面并展示指定页面。</p>
-          <code>public/catalog/index.json → hide_game_ui</code>
+          <code>public/config/client.json → hide_game_ui.android / hide_game_ui.ios</code>
           <span id="clientSettingsMeta" class="client-setting-meta">正在读取当前配置…</span>
         </div>
-        <label class="client-switch">
-          <input id="hideGameUiToggle" type="checkbox">
-          <span class="client-switch-track" aria-hidden="true"><span></span></span>
-          <strong id="hideGameUiToggleText">关闭</strong>
-        </label>
+        <div class="client-platform-switches">
+          <div class="client-platform-switch">
+            <span>Android</span>
+            <label class="client-switch">
+              <input id="hideGameUiAndroid" type="checkbox">
+              <span class="client-switch-track" aria-hidden="true"><span></span></span>
+              <strong id="hideGameUiAndroidText">关闭</strong>
+            </label>
+          </div>
+          <div class="client-platform-switch">
+            <span>iOS</span>
+            <label class="client-switch">
+              <input id="hideGameUiIos" type="checkbox">
+              <span class="client-switch-track" aria-hidden="true"><span></span></span>
+              <strong id="hideGameUiIosText">关闭</strong>
+            </label>
+          </div>
+        </div>
       </div>
 
       <div class="client-setting-actions">

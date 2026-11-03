@@ -28,8 +28,10 @@ const retryMigrationButton = el('retryMigrationButton');
 const restartMigrationButton = el('restartMigrationButton');
 const migrationDoneButton = el('migrationDoneButton');
 const migrationCloseButton = el('migrationCloseButton');
-const hideGameUiToggle = el('hideGameUiToggle');
-const hideGameUiToggleText = el('hideGameUiToggleText');
+const hideGameUiAndroid = el('hideGameUiAndroid');
+const hideGameUiAndroidText = el('hideGameUiAndroidText');
+const hideGameUiIos = el('hideGameUiIos');
+const hideGameUiIosText = el('hideGameUiIosText');
 const clientSettingsBadge = el('clientSettingsBadge');
 const clientSettingsMeta = el('clientSettingsMeta');
 const clientSettingsHint = el('clientSettingsHint');
@@ -72,7 +74,8 @@ function bindEvents() {
   migrationDoneButton.addEventListener('click', closeMigration);
   targetRepositoryUrl.addEventListener('input', clearMigrationError);
   targetBranch.addEventListener('input', clearMigrationError);
-  hideGameUiToggle.addEventListener('change', updateClientSettingsControls);
+  hideGameUiAndroid.addEventListener('change', updateClientSettingsControls);
+  hideGameUiIos.addEventListener('change', updateClientSettingsControls);
   saveClientSettingsButton.addEventListener('click', saveClientSettings);
 }
 
@@ -139,30 +142,50 @@ function renderOverview(overview) {
 
 function renderClientSettings(settings) {
   state.clientSettings = settings;
-  const hidden = settings.hide_game_ui === true;
-  hideGameUiToggle.checked = hidden;
-  clientSettingsBadge.className = `client-setting-badge ${hidden ? 'on' : 'off'}`;
-  clientSettingsBadge.textContent = hidden ? '游戏界面已隐藏' : '游戏界面正常显示';
+  const flags = settings.hide_game_ui || {};
+  const android = flags.android === true;
+  const ios = flags.ios === true;
+  hideGameUiAndroid.checked = android;
+  hideGameUiIos.checked = ios;
+
+  const hiddenCount = Number(android) + Number(ios);
+  clientSettingsBadge.className = `client-setting-badge ${hiddenCount ? 'on' : 'off'}`;
+  clientSettingsBadge.textContent = hiddenCount === 2
+    ? 'Android / iOS 已隐藏'
+    : hiddenCount === 1
+      ? android
+        ? '仅 Android 已隐藏'
+        : '仅 iOS 已隐藏'
+      : 'Android / iOS 正常显示';
   clientSettingsMeta.textContent =
-    `当前值：hide_game_ui = ${hidden}` +
-    (settings.updated_at ? ` · 总表更新时间 ${formatTime(settings.updated_at)}` : '');
+    `当前值：hide_game_ui = { android: ${android}, ios: ${ios} }` +
+    (settings.updated_at ? ` · 配置更新时间 ${formatTime(settings.updated_at)}` : '');
   updateClientSettingsControls();
 }
 
 function updateClientSettingsControls() {
-  const hidden = hideGameUiToggle.checked;
-  hideGameUiToggleText.textContent = hidden ? '开启' : '关闭';
-  clientSettingsHint.textContent = hidden
-    ? '开启后客户端会隐藏正常游戏界面，并展示指定页面。'
-    : '关闭后客户端会正常展示游戏界面。';
-  const changed = state.clientSettings
-    ? hidden !== (state.clientSettings.hide_game_ui === true)
+  const android = hideGameUiAndroid.checked;
+  const ios = hideGameUiIos.checked;
+  hideGameUiAndroidText.textContent = android ? '开启' : '关闭';
+  hideGameUiIosText.textContent = ios ? '开启' : '关闭';
+  clientSettingsHint.textContent = android && ios
+    ? 'Android 和 iOS 均会隐藏正常游戏界面。'
+    : android
+      ? '仅 Android 会隐藏正常游戏界面，iOS 正常展示。'
+      : ios
+        ? '仅 iOS 会隐藏正常游戏界面，Android 正常展示。'
+        : 'Android 和 iOS 均正常展示游戏界面。';
+
+  const current = state.clientSettings?.hide_game_ui;
+  const changed = current
+    ? android !== (current.android === true) || ios !== (current.ios === true)
     : false;
   saveClientSettingsButton.disabled = state.savingClientSettings || !changed;
   saveClientSettingsButton.textContent = state.savingClientSettings
     ? '正在提交到 GitHub...'
     : '保存并提交到 GitHub';
-  hideGameUiToggle.disabled = state.savingClientSettings;
+  hideGameUiAndroid.disabled = state.savingClientSettings;
+  hideGameUiIos.disabled = state.savingClientSettings;
 }
 
 async function saveClientSettings() {
@@ -173,7 +196,12 @@ async function saveClientSettings() {
     const result = await api('/api/client-settings', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ hide_game_ui: hideGameUiToggle.checked }),
+      body: JSON.stringify({
+        hide_game_ui: {
+          android: hideGameUiAndroid.checked,
+          ios: hideGameUiIos.checked,
+        },
+      }),
     });
     state.savingClientSettings = false;
     renderClientSettings(result);

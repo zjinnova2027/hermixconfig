@@ -176,6 +176,39 @@ function indexValidator(payload) {
   };
 }
 
+function clientConfigValidator(payload) {
+  if (!payload || typeof payload !== 'object') {
+    return { status: 'error', detail: '客户端配置内容为空' };
+  }
+  if (payload.schema_version !== 1) {
+    return {
+      status: 'error',
+      detail: `客户端配置 schema_version 应为 1，实际为 ${payload.schema_version ?? '缺失'}`,
+    };
+  }
+  const flags = payload.hide_game_ui;
+  if (
+    !flags ||
+    typeof flags !== 'object' ||
+    typeof flags.android !== 'boolean' ||
+    typeof flags.ios !== 'boolean'
+  ) {
+    return {
+      status: 'error',
+      detail: 'hide_game_ui 必须同时包含布尔值 android 和 ios',
+    };
+  }
+  return {
+    status: 'ok',
+    detail: `Android ${flags.android ? '隐藏' : '正常'} · iOS ${flags.ios ? '隐藏' : '正常'}`,
+    meta: {
+      schema_version: payload.schema_version,
+      updated_at: payload.updated_at || null,
+      hide_game_ui: flags,
+    },
+  };
+}
+
 function catalogValidator(payload) {
   if (!payload || typeof payload !== 'object') {
     return { status: 'error', detail: '分类表内容为空' };
@@ -242,8 +275,16 @@ async function runNetworkTest(config, options = {}) {
   const indexFallbackUrl = mainRepository.fallbackPublicBaseUrl
     ? publicFileUrl(mainRepository.fallbackPublicBaseUrl, indexPath)
     : '';
+  const clientConfigPath = 'config/client.json';
+  const clientConfigPrimaryUrl = publicFileUrl(
+    mainRepository.publicBaseUrl,
+    clientConfigPath,
+  );
+  const clientConfigFallbackUrl = mainRepository.fallbackPublicBaseUrl
+    ? publicFileUrl(mainRepository.fallbackPublicBaseUrl, clientConfigPath)
+    : '';
 
-  const [githubChecks, indexResult] = await Promise.all([
+  const [githubChecks, indexResult, clientConfigResult] = await Promise.all([
     Promise.all(
       repositories.map(async (repository) => ({
         repository,
@@ -266,6 +307,15 @@ async function runNetworkTest(config, options = {}) {
       fetchImpl,
       validate: indexValidator,
     }),
+    inspectPrimaryAndFallback({
+      key: 'client-config',
+      label: '客户端配置 client.json',
+      primaryUrl: clientConfigPrimaryUrl,
+      fallbackUrl: clientConfigFallbackUrl,
+      timeoutMs,
+      fetchImpl,
+      validate: clientConfigValidator,
+    }),
   ]);
 
   for (const { repository, result } of githubChecks) {
@@ -275,7 +325,7 @@ async function runNetworkTest(config, options = {}) {
     ensureGroup(groups, repository.id, repository).checks.push(check);
   }
   const mainGroup = ensureGroup(groups, mainRepository.id, mainRepository);
-  mainGroup.checks.push(...indexResult.checks);
+  mainGroup.checks.push(...indexResult.checks, ...clientConfigResult.checks);
 
   const index = indexResult.payload;
   if (index?.schema_version === 2 && index.catalogs) {
@@ -360,6 +410,7 @@ async function runNetworkTest(config, options = {}) {
 module.exports = {
   DEFAULT_TIMEOUT_MS,
   catalogValidator,
+  clientConfigValidator,
   indexValidator,
   inspectUrl,
   publicFileUrl,

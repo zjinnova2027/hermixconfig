@@ -18,7 +18,7 @@ function git(args, options = {}) {
   });
 }
 
-test('updates hide_game_ui in the public index and pushes it to the remote', async (t) => {
+test('updates platform hide_game_ui flags and pushes the client config', async (t) => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'client-settings-'));
   const repoRoot = path.join(root, 'hermixrom');
   const remoteRoot = path.join(root, 'hermixrom.git');
@@ -75,37 +75,44 @@ test('updates hide_game_ui in the public index and pushes it to the remote', asy
   });
 
   const initial = await (await fetch(`${baseUrl}/api/client-settings`)).json();
-  assert.equal(initial.hide_game_ui, false);
+  assert.deepEqual(initial.hide_game_ui, { android: false, ios: false });
 
   const updatedResponse = await fetch(`${baseUrl}/api/client-settings`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ hide_game_ui: true }),
+    body: JSON.stringify({ hide_game_ui: { android: true, ios: false } }),
   });
   assert.equal(updatedResponse.status, 200);
   const updated = await updatedResponse.json();
-  assert.equal(updated.hide_game_ui, true);
+  assert.deepEqual(updated.hide_game_ui, { android: true, ios: false });
   assert.equal(updated.changed, true);
   assert.equal(updated.pushed, true);
   assert.ok(updated.commit);
 
+  const remoteClientConfig = JSON.parse(
+    git(['--git-dir', remoteRoot, 'show', 'HEAD:public/config/client.json']),
+  );
+  assert.deepEqual(remoteClientConfig.hide_game_ui, {
+    android: true,
+    ios: false,
+  });
   const remoteIndex = JSON.parse(
     git(['--git-dir', remoteRoot, 'show', 'HEAD:public/catalog/index.json']),
   );
-  assert.equal(remoteIndex.hide_game_ui, true);
+  assert.equal(Object.hasOwn(remoteIndex, 'hide_game_ui'), false);
 
   const unchangedResponse = await fetch(`${baseUrl}/api/client-settings`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ hide_game_ui: true }),
+    body: JSON.stringify({ hide_game_ui: { android: true, ios: false } }),
   });
   const unchanged = await unchangedResponse.json();
-  assert.equal(unchanged.hide_game_ui, true);
+  assert.deepEqual(unchanged.hide_game_ui, { android: true, ios: false });
   assert.equal(unchanged.changed, false);
   assert.equal(unchanged.pushed, false);
 });
 
-test('rejects a non-boolean hide_game_ui value', async (t) => {
+test('rejects platform flags that are not both booleans', async (t) => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'client-settings-invalid-'));
   const repository = {
     id: 'hermixrom',
@@ -151,7 +158,7 @@ test('rejects a non-boolean hide_game_ui value', async (t) => {
   const response = await fetch(`${baseUrl}/api/client-settings`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ hide_game_ui: 'true' }),
+    body: JSON.stringify({ hide_game_ui: { android: true, ios: 'false' } }),
   });
   assert.equal(response.status, 400);
   const payload = await response.json();

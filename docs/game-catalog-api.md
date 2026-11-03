@@ -126,7 +126,6 @@ public/catalog/index.json
 {
   "schema_version": 2,
   "updated_at": "2026-10-26T04:05:06.789Z",
-  "hide_game_ui": false,
   "repositories": {
     "gamelist": {
       "url": "https://github.com/zjinnova2027/hermixrom",
@@ -166,7 +165,6 @@ public/catalog/index.json
 |---|---|---|
 | `schema_version` | number | 数据结构版本，当前固定为 `2` |
 | `updated_at` | string/null | 所有分类中最新的更新时间，ISO 8601 毫秒精度 |
-| `hide_game_ui` | boolean | 客户端是否隐藏正常游戏界面；缺失或类型错误时按 `false` 处理 |
 | `repositories` | object | 仓库 ID 到仓库地址和公开根地址的映射 |
 | `catalogs` | object | 游戏类型到分类 URL、所属仓库和版本时间的映射 |
 
@@ -182,30 +180,58 @@ public/catalog/index.json
 
 分类可以位于任意已配置仓库。客户端必须直接使用 `url`，不能假设分类表和 `index.json` 位于同一仓库或同一目录。
 
-### 3.1 客户端显示开关 `hide_game_ui`
+### 3.1 独立客户端配置接口
 
-`hide_game_ui` 是总索引顶层的全局客户端开关：
+Android / iOS 显示开关不在 `index.json` 中，使用独立接口：
 
-```json
-"hide_game_ui": false
+```text
+public/config/client.json
 ```
 
-语义：
+主地址：
 
-- `false`：客户端正常展示游戏界面；
-- `true`：客户端隐藏正常游戏界面，展示客户端定义的目标页面；
-- 字段缺失或值不是布尔值时：按 `false` 处理；
-- 客户端首次读取索引失败或从未成功读取该字段时：默认使用 `false`；
-- 客户端曾成功读取到 `true` 后，应持久化最后状态；后续索引请求失败时继续使用上次成功值，避免误展示正常游戏界面。
+```text
+https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public/config/client.json
+```
 
-处理规则：
+备用地址：
 
-1. 每次成功解析 `index.json` 后读取该字段；
-2. 在渲染游戏界面前应用开关；
-3. 开关变化不需要重新下载分类表，分类版本比较逻辑保持不变；
-4. `index.json.updated_at` 可能因开关变化而更新，但 `catalogs[类型].updated_at` 不变时仍应使用分类缓存；
-5. 旧客户端会忽略这个字段，保持原有行为；
-6. 开关为公开数据，不包含鉴权或敏感信息。
+```text
+https://gh-proxy.com/https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public/config/client.json
+```
+
+响应示例：
+
+```json
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-03T09:27:26.440Z",
+  "hide_game_ui": {
+    "android": true,
+    "ios": false
+  }
+}
+```
+
+平台字段：
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `hide_game_ui.android` | boolean | Android 是否隐藏正常游戏界面 |
+| `hide_game_ui.ios` | boolean | iOS 是否隐藏正常游戏界面 |
+
+规则：
+
+- Android 只读取 `hide_game_ui.android`；
+- iOS 只读取 `hide_game_ui.ios`；
+- 当前平台字段缺失或不是布尔值时按 `false` 处理；
+- 成功读取到 `true` 后应持久化当前平台最后状态；
+- 配置请求失败时保持上次成功值，不要误改成 `false`；
+- 从未成功读取时默认 `false`；
+- `client.json` 与索引、分类表版本完全独立；
+- 配置变化不会改变分类 `updated_at`，不会触发分类表重新下载。
+
+完整客户端说明见 [`client-hide-game-ui.md`](./client-hide-game-ui.md)。
 
 ## 4. 类型游戏列表
 
@@ -401,7 +427,6 @@ sf2ce.zip
 data class GameIndex(
     @SerializedName("schema_version") val schemaVersion: Int,
     @SerializedName("updated_at") val updatedAt: String?,
-    @SerializedName("hide_game_ui") val hideGameUi: Boolean = false,
     val repositories: Map<String, GameRepository>,
     val catalogs: Map<String, GameCatalogInfo>,
 )
@@ -448,7 +473,7 @@ data class GameItem(
 - 游戏包最大 10MB（可直接上传 ZIP）。
 - 海报为可选文件，支持 JPG、PNG、WebP。
 - 当前数据格式版本为 `2`。
-- 总索引新增可选布尔字段 `hide_game_ui`，缺失时按 `false` 处理。
+- Android / iOS 显示开关使用独立接口 `public/config/client.json`，不放在总索引或分类 JSON 中。
 - 分类表可以位于不同 GitHub 仓库，客户端必须使用索引中的完整 URL。
 - `catalogs[类型].updated_at` 必须与分类表顶层字段一致。
 - 客户端应按分类版本跳过未变化列表。
@@ -459,9 +484,9 @@ data class GameItem(
 
 ### 2026-11-03
 
-- 总索引新增顶层字段 `hide_game_ui`，默认 `false`。
-- 字段为全局客户端显示开关，不放在分类 JSON 中。
-- 字段变化不需要重新下载分类表，也不改变分类版本协议。
+- Android / iOS 显示开关拆分为独立接口 `public/config/client.json`。
+- 两个平台分别使用 `hide_game_ui.android` 和 `hide_game_ui.ios`，默认均为 `false`。
+- 开关与总索引、分类版本完全独立，不会触发分类表重新下载。
 
 ### 2026-10-26
 

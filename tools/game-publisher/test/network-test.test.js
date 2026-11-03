@@ -53,10 +53,16 @@ const catalog = {
   updated_at: '2026-11-03T09:00:00.000Z',
   games: [{ id: 'gba-test', name: '测试游戏' }],
 };
+const clientConfig = {
+  schema_version: 1,
+  updated_at: '2026-11-03T09:30:00.000Z',
+  hide_game_ui: { android: false, ios: true },
+};
 
 test('reports a healthy repository when GitHub, index and catalog are online', async () => {
   const fetchImpl = async (url, options) => {
     if (options.method === 'HEAD') return response(null);
+    if (url.includes('/config/client.json')) return response(clientConfig);
     if (url.includes('/catalog/index.json')) return response(index);
     if (url.includes('/catalog/gba.json')) return response(catalog);
     throw new Error(`unexpected request: ${url}`);
@@ -71,7 +77,12 @@ test('reports a healthy repository when GitHub, index and catalog are online', a
   assert.equal(result.groups[0].status, 'ok');
   assert.deepEqual(
     result.groups[0].checks.map((check) => check.label),
-    ['GitHub 仓库页面', '公开索引 index.json（主地址）', 'GBA 分类表（主地址）'],
+    [
+      'GitHub 仓库页面',
+      '公开索引 index.json（主地址）',
+      '客户端配置 client.json（主地址）',
+      'GBA 分类表（主地址）',
+    ],
   );
 });
 
@@ -80,9 +91,11 @@ test('uses the fallback index when the primary GitHub Raw endpoint fails', async
   const fetchImpl = async (url, options) => {
     if (options.method === 'HEAD') return response(null);
     if (url.startsWith('https://gh-proxy.com/')) {
+      if (url.includes('/config/client.json')) return response(clientConfig);
       if (url.includes('/catalog/index.json')) return response(index);
       if (url.includes('/catalog/gba.json')) return response(catalog);
     }
+    if (url.includes('/config/client.json')) return response(clientConfig);
     if (url.includes('/catalog/index.json')) return response('upstream error', 502, 'Bad Gateway');
     if (url.includes('/catalog/gba.json')) return response(catalog);
     throw new Error(`unexpected request: ${url}`);
@@ -102,6 +115,7 @@ test('uses the fallback index when the primary GitHub Raw endpoint fails', async
 test('reports an error when the public index has an unsupported schema', async () => {
   const fetchImpl = async (url, options) => {
     if (options.method === 'HEAD') return response(null);
+    if (url.includes('/config/client.json')) return response(clientConfig);
     if (url.includes('/catalog/index.json')) {
       return response({ schema_version: 1, catalogs: {} });
     }
@@ -123,6 +137,7 @@ test('marks a catalog version mismatch as a warning', async () => {
   };
   const fetchImpl = async (url, options) => {
     if (options.method === 'HEAD') return response(null);
+    if (url.includes('/config/client.json')) return response(clientConfig);
     if (url.includes('/catalog/index.json')) return response(index);
     if (url.includes('/catalog/gba.json')) return response(mismatchedCatalog);
     throw new Error(`unexpected request: ${url}`);

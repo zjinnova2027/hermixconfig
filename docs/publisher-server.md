@@ -61,7 +61,6 @@
 {
   "schema_version": 2,
   "updated_at": "2026-10-26T04:05:06.789Z",
-  "hide_game_ui": false,
   "repositories": {
     "gamelist": {
       "url": "https://github.com/zjinnova2027/hermixrom",
@@ -85,7 +84,6 @@
 一致性要求：
 
 - `catalogs[类型].updated_at` 必须等于分类表顶层的 `updated_at`。
-- 顶层 `hide_game_ui` 是客户端全局显示开关，默认 `false`；后续上传或迁移重新生成索引时必须保留当前值。
 - `catalogs[类型].url` 是完整地址，客户端不再根据总库相对路径拼接。
 - 发布器使用单调递增的毫秒时间，避免连续操作落在同一毫秒时版本不变。
 - 分类独立仓库发布失败时，总库索引不会更新。
@@ -134,6 +132,7 @@ http://127.0.0.1:4173
 - 每个已配置仓库的 GitHub 页面是否可访问；
 - 主仓库的 `catalog/index.json` 主地址和备用线路；
 - `index.json` 的 `schema_version` 是否为 `2`；
+- 独立客户端配置 `config/client.json` 主地址和备用线路；
 - 索引中每个分类表的主地址和备用线路；
 - 分类表 JSON 是否有效、`games` 是否为数组；
 - 分类表顶层 `updated_at` 是否与索引记录一致；
@@ -249,30 +248,46 @@ http://127.0.0.1:4173/repositories.html
 
 ### 5.1 客户端显示设置
 
-仓库管理页增加“客户端显示设置”，可直接切换并提交总库索引顶层的：
+仓库管理页提供 Android 和 iOS 两个独立开关。开关配置不放在总索引或分类 JSON 中，而是写入独立公开文件：
 
-```json
-"hide_game_ui": false
+```text
+public/config/client.json
 ```
 
-用途：
+文件格式：
 
-- `false`：客户端正常展示游戏界面；
-- `true`：客户端隐藏正常游戏界面，展示客户端定义的目标页面。
+```json
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-03T09:27:26.440Z",
+  "hide_game_ui": {
+    "android": true,
+    "ios": false
+  }
+}
+```
+
+语义：
+
+- `hide_game_ui.android`：Android 是否隐藏正常游戏界面；
+- `hide_game_ui.ios`：iOS 是否隐藏正常游戏界面；
+- 两个平台默认均为 `false`；
+- 一个平台开关变化不影响另一个平台。
 
 页面流程：
 
-1. 读取当前 `index.json` 中的 `hide_game_ui`；
-2. 切换开关；
+1. 读取当前 `config/client.json`；
+2. 分别切换 Android、iOS；
 3. 点击“保存并提交到 GitHub”；
-4. 后台更新 `index.json.updated_at` 和 `hide_game_ui`；
-5. 只提交并推送主仓库的 `public/catalog/index.json`；
-6. 返回 commit ID 和最新值。
+4. 后台更新 `client.json.updated_at` 和两个平台字段；
+5. 只提交并推送主仓库的 `public/config/client.json`；
+6. 返回 commit ID 和最新配置。
 
-后续上传游戏、删除游戏或迁移分类时，`writeIndex()` 会自动保留当前开关值，不会被重置为默认值。
+后续上传游戏、删除游戏或迁移分类都不会修改该独立配置文件。
 
-如果 commit 成功但 push 失败，本地开关会保持新值；再次点击保存会尝试补推当前提交。仓库迁移任务执行期间禁止修改该设置。
+如果 commit 成功但 push 失败，本地配置会保持新值；再次点击保存会尝试补推当前提交。仓库迁移任务执行期间禁止修改该设置。
 
+## 6. 发布规则
 ## 6. 发布规则
 
 ### 新增游戏
@@ -398,8 +413,8 @@ git push origin HEAD:main
 |---|---|
 | `GET /api/health` | 服务状态和每个已配置仓库的 Git 状态 |
 | `GET /api/config` | 当前配置和限制 |
-| `GET /api/client-settings` | 读取总索引中的客户端显示开关 |
-| `PUT /api/client-settings` | 修改 `hide_game_ui` 并提交、推送总库索引 |
+| `GET /api/client-settings` | 读取独立客户端配置和公开 URL |
+| `PUT /api/client-settings` | 修改 Android/iOS 开关并提交、推送 `config/client.json` |
 | `GET /api/games` | 读取全部分类的游戏、版本和所属仓库 |
 | `POST /api/games` | multipart 上传或更新游戏 |
 | `DELETE /api/games/:id` | 删除游戏 |
@@ -415,7 +430,10 @@ git push origin HEAD:main
 
 ```json
 {
-  "hide_game_ui": true
+  "hide_game_ui": {
+    "android": true,
+    "ios": false
+  }
 }
 ```
 
@@ -428,9 +446,13 @@ git push origin HEAD:main
   "pushed": true,
   "commit": "abc1234",
   "repository": "hermixrom",
-  "hide_game_ui": true,
+  "hide_game_ui": {
+    "android": true,
+    "ios": false
+  },
   "updated_at": "2026-11-03T10:00:00.000Z",
-  "index_url": "https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public/catalog/index.json"
+  "url": "https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public/config/client.json",
+  "fallback_url": "https://gh-proxy.com/https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public/config/client.json"
 }
 ```
 
@@ -533,7 +555,7 @@ npm test
 - GitHub 仓库地址解析；
 - 仓库迁移页面使用的预检和任务状态接口；
 - GitHub 仓库、索引和分类表网络测试；
-- `hide_game_ui` 的读取、提交、推送和重新生成保留；
+- Android / iOS `hide_game_ui` 独立接口的读取、提交和推送；
 - 分类资源地址解析。
 
 ## 11. 常见问题
@@ -592,9 +614,9 @@ GitHub Raw 可能有缓存。等待片刻，或在请求地址后加 `?v=<update
 ### 2026-11-03
 
 - 首页增加“网络测试”，检查 GitHub 仓库、索引、分类表和备用线路。
-- 总索引增加顶层 `hide_game_ui`，默认 `false`。
-- 仓库管理页增加“客户端显示设置”，可直接修改并推送总索引。
-- 后续游戏发布和分类迁移会保留当前 `hide_game_ui` 值。
+- Android / iOS 显示开关拆分为独立接口 `public/config/client.json`。
+- 仓库管理页增加 Android、iOS 两个独立开关。
+- 后台只提交和推送 `config/client.json`，不再修改总索引。
 - 增加客户端隐藏游戏界面说明文档。
 
 ### 2026-10-26

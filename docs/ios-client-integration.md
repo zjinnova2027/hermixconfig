@@ -271,7 +271,6 @@ fallback:  endpoint.fallbackIndexURL
 {
   "schema_version": 2,
   "updated_at": "2026-10-26T06:47:25.434Z",
-  "hide_game_ui": false,
   "repositories": {
     "hermixrom": {
       "url": "https://github.com/zjinnova2027/hermixrom",
@@ -292,14 +291,24 @@ fallback:  endpoint.fallbackIndexURL
 }
 ```
 
-新增可选顶层字段 `hide_game_ui`：
+Android / iOS 显示开关不在 `index.json` 中，使用独立接口：
 
-- `false`、字段缺失或类型错误：正常展示游戏界面；
-- `true`：隐藏正常游戏界面，展示客户端定义的目标页面；
-- 成功读取后建议持久化最后值；后续索引请求失败时不要因为网络失败把已保存的 `true` 覆盖成 `false`；
-- 只改变该字段时，分类 `updated_at` 不变，不应重新下载分类表。
+```text
+https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public/config/client.json
+```
 
-详细客户端说明见 [`client-hide-game-ui.md`](./client-hide-game-ui.md)。
+iOS 只读取：
+
+```json
+"hide_game_ui": {
+  "android": false,
+  "ios": true
+}
+```
+
+中的 `hide_game_ui.ios`。该接口与索引、分类表版本完全独立，配置变化不会触发分类表重新下载。
+
+详细客户端说明和 Swift 数据模型见 [`client-hide-game-ui.md`](./client-hide-game-ui.md)。
 
 iOS 必须：
 
@@ -466,20 +475,14 @@ ROM 和 ZIP 均公开下载，不需要鉴权。
 struct GameIndex: Decodable {
     let schemaVersion: Int
     let updatedAt: String?
-    let hideGameUI: Bool?
     let repositories: [String: RepositoryIndexEntry]
     let catalogs: [String: CatalogIndexEntry]
 
     enum CodingKeys: String, CodingKey {
         case schemaVersion = "schema_version"
         case updatedAt = "updated_at"
-        case hideGameUI = "hide_game_ui"
         case repositories
         case catalogs
-    }
-
-    var shouldHideGameUI: Bool {
-        hideGameUI == true
     }
 }
 

@@ -122,21 +122,33 @@ function createApp(initialConfig, initialStore, initialPublisher) {
       return;
     }
     const hideGameUi = req.body?.hide_game_ui;
-    if (typeof hideGameUi !== 'boolean') {
-      next(httpError(400, 'INVALID_HIDE_GAME_UI', 'hide_game_ui 必须是布尔值'));
+    if (
+      !hideGameUi ||
+      typeof hideGameUi !== 'object' ||
+      typeof hideGameUi.android !== 'boolean' ||
+      typeof hideGameUi.ios !== 'boolean'
+    ) {
+      next(httpError(
+        400,
+        'INVALID_HIDE_GAME_UI',
+        'hide_game_ui 必须同时包含布尔值 android 和 ios',
+      ));
       return;
     }
 
     try {
       const repository = config.mainRepository;
-      const indexRelative = path
-        .relative(repository.root, store.indexPath())
+      const clientConfigRelative = path
+        .relative(repository.root, store.clientConfigPath())
         .split(path.sep)
         .join('/');
-      const prepared = await prepareRepository(repository, [indexRelative]);
+      const prepared = await prepareRepository(repository, [clientConfigRelative]);
       const current = store.clientSettings();
 
-      if (current.hide_game_ui === hideGameUi) {
+      if (
+        current.hide_game_ui.android === hideGameUi.android &&
+        current.hide_game_ui.ios === hideGameUi.ios
+      ) {
         let pushed = false;
         let commit = null;
         if (prepared.ahead > 0) {
@@ -158,8 +170,8 @@ function createApp(initialConfig, initialStore, initialPublisher) {
       store.setHideGameUi(hideGameUi);
       const result = await commitAndPush(
         repository,
-        [indexRelative],
-        `client: set hide_game_ui ${hideGameUi}`,
+        [clientConfigRelative],
+        `client: set hide_game_ui android=${hideGameUi.android} ios=${hideGameUi.ios}`,
       );
       res.json({
         ok: true,

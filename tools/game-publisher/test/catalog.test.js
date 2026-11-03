@@ -54,7 +54,6 @@ test('creates one catalog file per type and a versioned index', () => {
     {
       schema_version: 2,
       updated_at: null,
-      hide_game_ui: false,
       repositories: {
         gamelist: {
           url: 'https://github.com/example/gamelist',
@@ -83,19 +82,30 @@ test('creates one catalog file per type and a versioned index', () => {
   );
 });
 
-test('stores hide_game_ui and preserves it when the index is regenerated', () => {
+test('stores platform hide_game_ui flags in a separate client config', () => {
   const store = makeStore();
   store.ensureStructure();
-  assert.equal(store.clientSettings().hide_game_ui, false);
+  assert.deepEqual(store.clientSettings().hide_game_ui, {
+    android: false,
+    ios: false,
+  });
 
-  const updated = store.setHideGameUi(true);
-  assert.equal(updated.hide_game_ui, true);
-  assert.equal(store.clientSettings().hide_game_ui, true);
+  const updated = store.setHideGameUi({ android: true, ios: false });
+  assert.deepEqual(updated.hide_game_ui, { android: true, ios: false });
+  assert.deepEqual(store.clientSettings().hide_game_ui, {
+    android: true,
+    ios: false,
+  });
   assert.ok(Date.parse(updated.updated_at));
 
   store.writeIndex();
-  assert.equal(store.readIndex().hide_game_ui, true);
-  assert.match(store.clientSettings().index_url, /catalog\/index\.json$/);
+  const index = JSON.parse(fs.readFileSync(store.indexPath(), 'utf8'));
+  assert.equal(Object.hasOwn(index, 'hide_game_ui'), false);
+  assert.deepEqual(store.readClientConfig().hide_game_ui, {
+    android: true,
+    ios: false,
+  });
+  assert.match(store.clientSettings().url, /config\/client\.json$/);
 });
 
 test('resolves relative asset paths against the type repository catalog directory', () => {

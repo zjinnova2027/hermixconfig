@@ -67,6 +67,14 @@ class CatalogStore {
     for (const repository of repositories) {
       fs.mkdirSync(this.repositoryCatalogRoot(repository), { recursive: true });
     }
+    fs.mkdirSync(path.dirname(this.clientConfigPath()), { recursive: true });
+    if (!fs.existsSync(this.clientConfigPath())) {
+      const legacy = this.legacyClientSettings();
+      this.writeClientConfig({
+        hideGameUi: legacy.hide_game_ui,
+        updatedAt: legacy.updated_at,
+      });
+    }
 
     for (const type of Object.keys(this.config.gameTypes)) {
       const repository = this.repositoryForType(type);
@@ -98,34 +106,104 @@ class CatalogStore {
     return path.join(this.repositoryCatalogRoot(this.mainRepository), 'index.json');
   }
 
-  readIndex() {
-    let value;
+  clientConfigPath() {
+    return path.join(this.contentRoot, 'config', 'client.json');
+  }
+
+  legacyClientSettings() {
     try {
-      value = JSON.parse(fs.readFileSync(this.indexPath(), 'utf8'));
-    } catch (error) {
-      throw new Error(`无法读取总库索引: ${error.message}`);
+      const index = JSON.parse(fs.readFileSync(this.indexPath(), 'utf8'));
+      const hidden = index?.hide_game_ui === true;
+      return {
+        hide_game_ui: { android: hidden, ios: hidden },
+        updated_at: typeof index?.updated_at === 'string' ? index.updated_at : null,
+      };
+    } catch {
+      return {
+        hide_game_ui: { android: false, ios: false },
+        updated_at: null,
+      };
     }
-    if (
-      !value ||
-      value.schema_version !== INDEX_SCHEMA_VERSION ||
-      !value.repositories ||
-      !value.catalogs
-    ) {
-      throw new Error('总库索引格式不正确');
+  }
+
+  normalizePlatformFlags(value) {
+    if (typeof value === 'boolean') {
+      return { android: value, ios: value };
     }
     return {
-      ...value,
-      hide_game_ui: value.hide_game_ui === true,
+      android: value?.android === true,
+      ios: value?.ios === true,
     };
   }
 
-  writeIndex(options = {}) {
-    let previous = null;
+  readClientConfig() {
+    let value;
     try {
-      previous = this.readIndex();
-    } catch {
-      // 首次生成索引时没有旧文件，使用默认值 false。
+      value = JSON.parse(fs.readFileSync(this.clientConfigPath(), 'utf8'));
+    } catch (error) {
+      throw new Error(`无法读取客户端配置: ${error.message}`);
     }
+    const updatedAt = value?.updated_at;
+    if (
+      !value ||
+      value.schema_version !== 1 ||
+      (updatedAt !== null && !Number.isFinite(Date.parse(updatedAt || '')))
+    ) {
+      throw new Error('客户端配置格式不正确');
+    }
+    return {
+      schema_version: 1,
+      updated_at: value.updated_at,
+      hide_game_ui: this.normalizePlatformFlags(value.hide_game_ui),
+    };
+  }
+
+  writeClientConfig({ hideGameUi, updatedAt }) {
+    const normalized = this.normalizePlatformFlags(hideGameUi);
+    this.writeJsonAtomic(this.clientConfigPath(), {
+      schema_version: 1,
+      updated_at: updatedAt || null,
+      hide_game_ui: normalized,
+    });
+    return this.readClientConfig();
+  }
+
+  setHideGameUi(value) {
+    if (
+      !value ||
+      typeof value !== 'object' ||
+      typeof value.android !== 'boolean' ||
+      typeof value.ios !== 'boolean'
+    ) {
+      throw new Error('hide_game_ui 必须同时包含布尔值 android 和 ios');
+    }
+    const current = this.readClientConfig();
+    return this.writeClientConfig({
+      hideGameUi: value,
+      updatedAt: this.nextTimestamp(current.updated_at),
+    });
+  }
+
+  clientSettings() {
+    const config = this.readClientConfig();
+    return {
+      hide_game_ui: config.hide_game_ui,
+      updated_at: config.updated_at,
+      url: this.publicClientConfigUrl(),
+      fallback_url: this.fallbackClientConfigUrl(),
+    };
+  }
+
+  publicClientConfigUrl() {
+    return `${this.mainRepository.publicBaseUrl}/config/client.json`;
+  }
+
+  fallbackClientConfigUrl() {
+    if (!this.mainRepository.fallbackPublicBaseUrl) return null;
+    return `${this.mainRepository.fallbackPublicBaseUrl}/config/client.json`;
+  }
+
+  writeIndex() {
     const catalogs = Object.keys(this.config.gameTypes).map((type) => ({
       type,
       repository: this.repositoryForType(type),
@@ -158,40 +236,12 @@ class CatalogStore {
         },
       ]),
     );
-    const hideGameUi = typeof options.hideGameUi === 'boolean'
-      ? options.hideGameUi
-      : previous?.hide_game_ui === true;
-    const updatedAt = typeof options.updatedAt === 'string' && options.updatedAt
-      ? options.updatedAt
-      : versions.length > 0
-        ? versions[versions.length - 1]
-        : null;
     this.writeJsonAtomic(this.indexPath(), {
       schema_version: INDEX_SCHEMA_VERSION,
-      updated_at: updatedAt,
-      hide_game_ui: hideGameUi,
+      updated_at: versions.length > 0 ? versions[versions.length - 1] : null,
       repositories,
       catalogs: catalogEntries,
     });
-  }
-
-  setHideGameUi(value) {
-    if (typeof value !== 'boolean') {
-      throw new Error('hide_game_ui 必须是布尔值');
-    }
-    const current = this.readIndex();
-    const updatedAt = this.nextTimestamp(current.updated_at);
-    this.writeIndex({ hideGameUi: value, updatedAt });
-    return this.readIndex();
-  }
-
-  clientSettings() {
-    const index = this.readIndex();
-    return {
-      hide_game_ui: index.hide_game_ui,
-      updated_at: index.updated_at,
-      index_url: `${this.mainRepository.publicBaseUrl}/catalog/index.json`,
-    };
   }
 
   nextTimestamp(previous) {

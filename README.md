@@ -39,7 +39,7 @@ http://127.0.0.1:4173/repositories.html
 
 ```text
 hermixconfig  私有管理仓库：后台、配置、文档
-hermixrom     公开数据仓库：index.json、分类 JSON、封面、ROM
+hermixrom     公开数据仓库：index.json、client.json、分类 JSON、封面、ROM
 ```
 
 当前 `publisher.config.json` 将公开数据目录配置为本地同级目录：
@@ -66,6 +66,13 @@ GitHub 代理备用地址：
 
 ```text
 https://gh-proxy.com/https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public/catalog/index.json
+```
+
+独立客户端配置（Android / iOS 显示开关）：
+
+```text
+https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public/config/client.json
+https://gh-proxy.com/https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public/config/client.json
 ```
 
 ## SSH

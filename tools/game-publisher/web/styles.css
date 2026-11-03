@@ -880,3 +880,25 @@ button.nav-link:disabled {
   .client-setting-actions { align-items: stretch; flex-direction: column; }
   #saveClientSettingsButton { width: 100%; }
 }
+
+.client-platform-switches {
+  min-width: 230px;
+  display: grid;
+  gap: 9px;
+  flex: 0 0 auto;
+}
+.client-platform-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 1px solid #e3e9f3;
+  border-radius: 13px;
+  background: rgba(255,255,255,.82);
+}
+.client-platform-switch > span { color: #43516a; font-size: 12px; font-weight: 750; }
+@media (max-width: 680px) {
+  .client-platform-switches { width: 100%; min-width: 0; }
+}

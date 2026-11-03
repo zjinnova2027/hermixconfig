@@ -137,7 +137,11 @@ test('publishes catalog assets and index across two repositories', async (t) => 
   assert.equal(index.catalogs.GBA.repository, 'gba');
   assert.equal(index.catalogs.GBA.url, 'https://raw.example/gba/public/catalog/gba.json');
   assert.equal(catalog.games.length, 1);
-  assert.deepEqual(mainFiles.trim().split('\n'), ['public/catalog/index.json']);
+  assert.deepEqual(mainFiles.trim().split('\n'), [
+    'public/catalog/index.json',
+    'public/config/client.json',
+  ]);
+  assert.equal(Object.hasOwn(index, 'hide_game_ui'), false);
   assert.ok(gbaFiles.includes('public/catalog/gba.json'));
   assert.ok(gbaFiles.includes(`public/roms/gba/${result.game.id}/game.gba`));
   assert.equal(result.repository, 'gba');
