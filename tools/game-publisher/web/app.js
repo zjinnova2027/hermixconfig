@@ -11,6 +11,7 @@ const state = {
   deleting: false,
   deleteTimer: null,
   autoFilledName: null,
+  networkTestRunning: false,
 };
 
 const el = (id) => document.getElementById(id);
@@ -43,6 +44,14 @@ const deleteConfirmButton = el('deleteConfirmButton');
 const deleteCancelButton = el('deleteCancelButton');
 const deleteCloseButton = el('deleteCloseButton');
 const deleteRetryButton = el('deleteRetryButton');
+const networkTestButton = el('networkTestButton');
+const networkTestDialog = el('networkTestDialog');
+const networkTestCloseIcon = el('networkTestCloseIcon');
+const networkTestDismissButton = el('networkTestDismissButton');
+const networkTestRerunButton = el('networkTestRerunButton');
+const networkTestLoading = el('networkTestLoading');
+const networkTestSummary = el('networkTestSummary');
+const networkTestResults = el('networkTestResults');
 
 async function init() {
   bindEvents();
@@ -81,6 +90,13 @@ function bindEvents() {
   deleteRetryButton.addEventListener('click', retryDeletePush);
   deleteDialog.addEventListener('click', (event) => {
     if (event.target === deleteDialog && !state.deleting) closeDeleteDialog();
+  });
+  networkTestButton.addEventListener('click', openNetworkTestDialog);
+  networkTestCloseIcon.addEventListener('click', closeNetworkTestDialog);
+  networkTestDismissButton.addEventListener('click', closeNetworkTestDialog);
+  networkTestRerunButton.addEventListener('click', runNetworkTest);
+  networkTestDialog.addEventListener('click', (event) => {
+    if (event.target === networkTestDialog) closeNetworkTestDialog();
   });
 }
 
@@ -609,6 +625,195 @@ function closeDeleteDialog() {
   stopDeleteProgress();
   deleteDialog.classList.add('hidden');
   state.pendingDeleteGame = null;
+}
+
+function openNetworkTestDialog() {
+  networkTestDialog.classList.remove('hidden');
+  runNetworkTest();
+}
+
+function closeNetworkTestDialog() {
+  networkTestDialog.classList.add('hidden');
+}
+
+async function runNetworkTest() {
+  if (state.networkTestRunning) return;
+  state.networkTestRunning = true;
+  networkTestButton.disabled = true;
+  networkTestRerunButton.disabled = true;
+  networkTestRerunButton.textContent = '测试中...';
+  networkTestLoading.classList.remove('hidden');
+  networkTestSummary.classList.add('hidden');
+  networkTestResults.replaceChildren();
+
+  try {
+    const result = await api('/api/network-test');
+    renderNetworkTest(result);
+  } catch (error) {
+    renderNetworkTestFailure(error);
+  } finally {
+    state.networkTestRunning = false;
+    networkTestButton.disabled = false;
+    networkTestRerunButton.disabled = false;
+    networkTestRerunButton.textContent = '重新测试';
+    networkTestLoading.classList.add('hidden');
+  }
+}
+
+function renderNetworkTest(result) {
+  const labels = {
+    ok: '在线正常',
+    warning: '部分异常',
+    error: '无法访问',
+  };
+  const groupLabels = {
+    ok: '正常',
+    warning: '需注意',
+    error: '异常',
+  };
+  const status = ['ok', 'warning', 'error'].includes(result.overall_status)
+    ? result.overall_status
+    : 'error';
+  const summary = result.summary || {};
+
+  const pill = document.createElement('span');
+  pill.className = `network-status-pill ${status}`;
+  pill.textContent = labels[status];
+
+  const copy = document.createElement('div');
+  copy.className = 'network-test-summary-copy';
+  const title = document.createElement('strong');
+  title.textContent = result.overall_status === 'ok'
+    ? '当前挂载的 GitHub 库在线可用'
+    : result.overall_status === 'warning'
+      ? 'GitHub 库可访问，但部分线路需要关注'
+      : '当前 GitHub 库无法正常访问';
+  const detail = document.createElement('span');
+  detail.textContent =
+    `${summary.repository_count || 0} 个仓库 · ${summary.check_count || 0} 项检查 · ` +
+    `通过 ${summary.ok_count || 0} / 警告 ${summary.warning_count || 0} / 异常 ${summary.error_count || 0}` +
+    ` · 耗时 ${formatElapsed(result.duration_ms)}`;
+  copy.append(title, detail);
+  networkTestSummary.replaceChildren(pill, copy);
+  networkTestSummary.classList.remove('hidden');
+
+  const groups = Array.isArray(result.groups) ? result.groups : [];
+  if (groups.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'network-test-empty';
+    empty.textContent = '没有可测试的仓库配置。';
+    networkTestResults.replaceChildren(empty);
+    return;
+  }
+
+  for (const group of groups) {
+    const groupStatus = ['ok', 'warning', 'error'].includes(group.status)
+      ? group.status
+      : 'error';
+    const section = document.createElement('section');
+    section.className = 'network-group';
+
+    const head = document.createElement('div');
+    head.className = 'network-group-head';
+    const groupTitle = document.createElement('div');
+    groupTitle.className = 'network-group-title';
+    const groupName = document.createElement('strong');
+    groupName.textContent = group.label || group.id;
+    groupTitle.append(groupName);
+    if (group.github_url) {
+      const link = document.createElement('a');
+      link.href = group.github_url;
+      link.target = '_blank';
+      link.rel = 'noreferrer';
+      link.textContent = `${group.github_url}${group.branch ? ` · ${group.branch}` : ''}`;
+      groupTitle.append(link);
+    }
+    const groupPill = document.createElement('span');
+    groupPill.className = `network-status-pill ${groupStatus}`;
+    groupPill.textContent = groupLabels[groupStatus];
+    head.append(groupTitle, groupPill);
+    section.append(head);
+
+    const checks = Array.isArray(group.checks) ? group.checks : [];
+    if (checks.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'network-test-empty';
+      empty.textContent = '没有执行检查。';
+      section.append(empty);
+    } else {
+      for (const check of checks) section.append(createNetworkCheckRow(check));
+    }
+    networkTestResults.append(section);
+  }
+}
+
+function createNetworkCheckRow(check) {
+  const status = ['ok', 'warning', 'error'].includes(check.status)
+    ? check.status
+    : 'error';
+  const row = document.createElement('div');
+  row.className = `network-check ${status}`;
+
+  const dot = document.createElement('span');
+  dot.className = 'network-check-dot';
+
+  const body = document.createElement('div');
+  body.className = 'network-check-body';
+  const label = document.createElement('strong');
+  label.textContent = check.label || '检查项';
+  const detail = document.createElement('span');
+  detail.textContent = check.detail || '';
+  body.append(label, detail);
+  if (check.url) {
+    const link = document.createElement('a');
+    link.href = check.url;
+    link.target = '_blank';
+    link.rel = 'noreferrer';
+    link.title = check.url;
+    link.textContent = check.url;
+    body.append(link);
+  }
+
+  const meta = document.createElement('div');
+  meta.className = 'network-check-meta';
+  if (check.http_status) {
+    const http = document.createElement('span');
+    http.textContent = `HTTP ${check.http_status}`;
+    meta.append(http);
+  }
+  const elapsed = document.createElement('span');
+  elapsed.textContent = formatElapsed(check.elapsed_ms);
+  meta.append(elapsed);
+
+  row.append(dot, body, meta);
+  return row;
+}
+
+function renderNetworkTestFailure(error) {
+  const pill = document.createElement('span');
+  pill.className = 'network-status-pill error';
+  pill.textContent = '测试失败';
+  const copy = document.createElement('div');
+  copy.className = 'network-test-summary-copy';
+  const title = document.createElement('strong');
+  title.textContent = '网络测试请求没有完成';
+  const detail = document.createElement('span');
+  detail.textContent = error.message || '未知错误';
+  copy.append(title, detail);
+  networkTestSummary.replaceChildren(pill, copy);
+  networkTestSummary.classList.remove('hidden');
+
+  const empty = document.createElement('div');
+  empty.className = 'network-test-empty';
+  empty.textContent = error.message || '未知错误';
+  networkTestResults.replaceChildren(empty);
+}
+
+function formatElapsed(milliseconds) {
+  const value = Number(milliseconds);
+  if (!Number.isFinite(value) || value < 0) return '—';
+  if (value < 1000) return `${Math.round(value)}ms`;
+  return `${(value / 1000).toFixed(value < 10000 ? 1 : 0)}s`;
 }
 
 async function retryPush() {

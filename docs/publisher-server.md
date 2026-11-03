@@ -61,6 +61,7 @@
 {
   "schema_version": 2,
   "updated_at": "2026-10-26T04:05:06.789Z",
+  "hide_game_ui": false,
   "repositories": {
     "gamelist": {
       "url": "https://github.com/zjinnova2027/hermixrom",
@@ -84,6 +85,7 @@
 一致性要求：
 
 - `catalogs[类型].updated_at` 必须等于分类表顶层的 `updated_at`。
+- 顶层 `hide_game_ui` 是客户端全局显示开关，默认 `false`；后续上传或迁移重新生成索引时必须保留当前值。
 - `catalogs[类型].url` 是完整地址，客户端不再根据总库相对路径拼接。
 - 发布器使用单调递增的毫秒时间，避免连续操作落在同一毫秒时版本不变。
 - 分类独立仓库发布失败时，总库索引不会更新。
@@ -122,6 +124,40 @@ http://127.0.0.1:4173
 ```
 
 后台只监听本机回环地址，不对局域网或公网开放。
+
+### 3.1 GitHub 网络测试
+
+首页“仓库管理”旁边的“网络测试”按钮用于检查当前挂载的 GitHub 仓库是否仍然在线可用。测试由本地后台发起，不依赖浏览器跨域访问。
+
+检查内容：
+
+- 每个已配置仓库的 GitHub 页面是否可访问；
+- 主仓库的 `catalog/index.json` 主地址和备用线路；
+- `index.json` 的 `schema_version` 是否为 `2`；
+- 索引中每个分类表的主地址和备用线路；
+- 分类表 JSON 是否有效、`games` 是否为数组；
+- 分类表顶层 `updated_at` 是否与索引记录一致；
+- 每项请求的 HTTP 状态、耗时和错误原因。
+
+测试结果：
+
+- 绿色：仓库、索引和全部分类表均正常；
+- 黄色：主流程可用，但 GitHub 页面、备用线路或版本一致性存在警告；
+- 红色：索引或分类表无法正常读取。
+
+接口：
+
+```http
+GET /api/network-test
+```
+
+可选参数 `timeout_ms`，默认 `7000`，允许范围 `2000-15000`。
+
+```bash
+curl 'http://127.0.0.1:4173/api/network-test'
+```
+
+测试不会修改仓库、JSON、ROM 或 Git 状态，也不会执行提交和推送。
 
 ## 4. 配置
 
@@ -210,6 +246,32 @@ http://127.0.0.1:4173/repositories.html
 - 点击“从失败步骤继续”会复用已经完成的阶段；
 - 新仓库尚未 push 时，可以放弃任务、清理目标仓库中的本次半成品并重新填写地址；
 - 服务重启后仍可读取历史任务状态。
+
+### 5.1 客户端显示设置
+
+仓库管理页增加“客户端显示设置”，可直接切换并提交总库索引顶层的：
+
+```json
+"hide_game_ui": false
+```
+
+用途：
+
+- `false`：客户端正常展示游戏界面；
+- `true`：客户端隐藏正常游戏界面，展示客户端定义的目标页面。
+
+页面流程：
+
+1. 读取当前 `index.json` 中的 `hide_game_ui`；
+2. 切换开关；
+3. 点击“保存并提交到 GitHub”；
+4. 后台更新 `index.json.updated_at` 和 `hide_game_ui`；
+5. 只提交并推送主仓库的 `public/catalog/index.json`；
+6. 返回 commit ID 和最新值。
+
+后续上传游戏、删除游戏或迁移分类时，`writeIndex()` 会自动保留当前开关值，不会被重置为默认值。
+
+如果 commit 成功但 push 失败，本地开关会保持新值；再次点击保存会尝试补推当前提交。仓库迁移任务执行期间禁止修改该设置。
 
 ## 6. 发布规则
 
@@ -336,6 +398,8 @@ git push origin HEAD:main
 |---|---|
 | `GET /api/health` | 服务状态和每个已配置仓库的 Git 状态 |
 | `GET /api/config` | 当前配置和限制 |
+| `GET /api/client-settings` | 读取总索引中的客户端显示开关 |
+| `PUT /api/client-settings` | 修改 `hide_game_ui` 并提交、推送总库索引 |
 | `GET /api/games` | 读取全部分类的游戏、版本和所属仓库 |
 | `POST /api/games` | multipart 上传或更新游戏 |
 | `DELETE /api/games/:id` | 删除游戏 |
@@ -346,6 +410,29 @@ git push origin HEAD:main
 | `GET /api/repositories/migrations/:id` | 查询迁移进度和日志 |
 | `POST /api/repositories/migrations/:id/retry` | 从失败步骤继续 |
 | `POST /api/repositories/migrations/:id/cancel` | 放弃尚未 push 到新仓库的失败任务并重新填写 |
+
+`PUT /api/client-settings` 请求：
+
+```json
+{
+  "hide_game_ui": true
+}
+```
+
+成功响应：
+
+```json
+{
+  "ok": true,
+  "changed": true,
+  "pushed": true,
+  "commit": "abc1234",
+  "repository": "hermixrom",
+  "hide_game_ui": true,
+  "updated_at": "2026-11-03T10:00:00.000Z",
+  "index_url": "https://raw.githubusercontent.com/zjinnova2027/hermixrom/main/public/catalog/index.json"
+}
+```
 
 `GET /api/games` 返回：
 
@@ -445,6 +532,8 @@ npm test
 - 双仓库测试：分类仓库保存 ROM/分类，总库只保存索引；
 - GitHub 仓库地址解析；
 - 仓库迁移页面使用的预检和任务状态接口；
+- GitHub 仓库、索引和分类表网络测试；
+- `hide_game_ui` 的读取、提交、推送和重新生成保留；
 - 分类资源地址解析。
 
 ## 11. 常见问题
@@ -499,6 +588,14 @@ GitHub Raw 可能有缓存。等待片刻，或在请求地址后加 `?v=<update
 如果主地址网络不可用，可切换到配置中的 `gh-proxy.com` Raw 代理备用地址。当前仓库超过 jsDelivr 的 50MB 包限制，因此不再使用 jsDelivr。
 
 ## 12. 变更记录
+
+### 2026-11-03
+
+- 首页增加“网络测试”，检查 GitHub 仓库、索引、分类表和备用线路。
+- 总索引增加顶层 `hide_game_ui`，默认 `false`。
+- 仓库管理页增加“客户端显示设置”，可直接修改并推送总索引。
+- 后续游戏发布和分类迁移会保留当前 `hide_game_ui` 值。
+- 增加客户端隐藏游戏界面说明文档。
 
 ### 2026-10-26
 

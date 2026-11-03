@@ -98,7 +98,34 @@ class CatalogStore {
     return path.join(this.repositoryCatalogRoot(this.mainRepository), 'index.json');
   }
 
-  writeIndex() {
+  readIndex() {
+    let value;
+    try {
+      value = JSON.parse(fs.readFileSync(this.indexPath(), 'utf8'));
+    } catch (error) {
+      throw new Error(`无法读取总库索引: ${error.message}`);
+    }
+    if (
+      !value ||
+      value.schema_version !== INDEX_SCHEMA_VERSION ||
+      !value.repositories ||
+      !value.catalogs
+    ) {
+      throw new Error('总库索引格式不正确');
+    }
+    return {
+      ...value,
+      hide_game_ui: value.hide_game_ui === true,
+    };
+  }
+
+  writeIndex(options = {}) {
+    let previous = null;
+    try {
+      previous = this.readIndex();
+    } catch {
+      // 首次生成索引时没有旧文件，使用默认值 false。
+    }
     const catalogs = Object.keys(this.config.gameTypes).map((type) => ({
       type,
       repository: this.repositoryForType(type),
@@ -131,12 +158,40 @@ class CatalogStore {
         },
       ]),
     );
+    const hideGameUi = typeof options.hideGameUi === 'boolean'
+      ? options.hideGameUi
+      : previous?.hide_game_ui === true;
+    const updatedAt = typeof options.updatedAt === 'string' && options.updatedAt
+      ? options.updatedAt
+      : versions.length > 0
+        ? versions[versions.length - 1]
+        : null;
     this.writeJsonAtomic(this.indexPath(), {
       schema_version: INDEX_SCHEMA_VERSION,
-      updated_at: versions.length > 0 ? versions[versions.length - 1] : null,
+      updated_at: updatedAt,
+      hide_game_ui: hideGameUi,
       repositories,
       catalogs: catalogEntries,
     });
+  }
+
+  setHideGameUi(value) {
+    if (typeof value !== 'boolean') {
+      throw new Error('hide_game_ui 必须是布尔值');
+    }
+    const current = this.readIndex();
+    const updatedAt = this.nextTimestamp(current.updated_at);
+    this.writeIndex({ hideGameUi: value, updatedAt });
+    return this.readIndex();
+  }
+
+  clientSettings() {
+    const index = this.readIndex();
+    return {
+      hide_game_ui: index.hide_game_ui,
+      updated_at: index.updated_at,
+      index_url: `${this.mainRepository.publicBaseUrl}/catalog/index.json`,
+    };
   }
 
   nextTimestamp(previous) {

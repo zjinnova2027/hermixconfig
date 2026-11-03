@@ -37,6 +37,35 @@
       <div id="repositoryCards" class="repository-grid"></div>
     </section>
 
+    <section class="panel repository-panel client-settings-panel">
+      <div class="panel-title">
+        <div>
+          <p class="eyebrow">CLIENT UI</p>
+          <h2>客户端显示设置</h2>
+        </div>
+        <span id="clientSettingsBadge" class="client-setting-badge">读取中</span>
+      </div>
+
+      <div class="client-setting-card">
+        <div class="client-setting-copy">
+          <strong>隐藏游戏界面</strong>
+          <p>开启后，客户端会隐藏正常游戏界面并展示指定页面。</p>
+          <code>public/catalog/index.json → hide_game_ui</code>
+          <span id="clientSettingsMeta" class="client-setting-meta">正在读取当前配置…</span>
+        </div>
+        <label class="client-switch">
+          <input id="hideGameUiToggle" type="checkbox">
+          <span class="client-switch-track" aria-hidden="true"><span></span></span>
+          <strong id="hideGameUiToggleText">关闭</strong>
+        </label>
+      </div>
+
+      <div class="client-setting-actions">
+        <span id="clientSettingsHint" class="client-setting-hint">关闭时客户端正常展示游戏界面。</span>
+        <button id="saveClientSettingsButton" class="primary" type="button" disabled>保存并提交到 GitHub</button>
+      </div>
+    </section>
+
     <section class="panel repository-panel">
       <div class="panel-title">
         <div>

@@ -54,6 +54,7 @@ test('creates one catalog file per type and a versioned index', () => {
     {
       schema_version: 2,
       updated_at: null,
+      hide_game_ui: false,
       repositories: {
         gamelist: {
           url: 'https://github.com/example/gamelist',
@@ -80,6 +81,21 @@ test('creates one catalog file per type and a versioned index', () => {
       },
     },
   );
+});
+
+test('stores hide_game_ui and preserves it when the index is regenerated', () => {
+  const store = makeStore();
+  store.ensureStructure();
+  assert.equal(store.clientSettings().hide_game_ui, false);
+
+  const updated = store.setHideGameUi(true);
+  assert.equal(updated.hide_game_ui, true);
+  assert.equal(store.clientSettings().hide_game_ui, true);
+  assert.ok(Date.parse(updated.updated_at));
+
+  store.writeIndex();
+  assert.equal(store.readIndex().hide_game_ui, true);
+  assert.match(store.clientSettings().index_url, /catalog\/index\.json$/);
 });
 
 test('resolves relative asset paths against the type repository catalog directory', () => {

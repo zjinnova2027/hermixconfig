@@ -6,8 +6,9 @@ const Busboy = require('busboy');
 const { loadConfig } = require('./config');
 const { CatalogStore } = require('./catalog');
 const { GamePublisher } = require('./publisher');
-const { pushCurrent, repositoryStatus } = require('./git');
+const { commitAndPush, prepareRepository, pushCurrent, repositoryStatus } = require('./git');
 const { RepositoryMigrationManager } = require('./repository-migration');
+const { DEFAULT_TIMEOUT_MS, runNetworkTest } = require('./network-health');
 
 function createApp(initialConfig, initialStore, initialPublisher) {
   let config = initialConfig;
@@ -50,6 +51,19 @@ function createApp(initialConfig, initialStore, initialPublisher) {
     });
   });
 
+  app.get('/api/network-test', async (req, res, next) => {
+    try {
+      const requestedTimeout = Number(req.query.timeout_ms);
+      const timeoutMs = Number.isFinite(requestedTimeout) && requestedTimeout > 0
+        ? Math.min(Math.max(requestedTimeout, 2000), 15000)
+        : DEFAULT_TIMEOUT_MS;
+      const result = await runNetworkTest(config, { timeoutMs });
+      res.json({ ok: true, ...result });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   app.get('/api/config', (req, res) => {
     res.json({
       ok: true,
@@ -88,6 +102,76 @@ function createApp(initialConfig, initialStore, initialPublisher) {
         }),
       ),
     });
+  });
+
+  app.get('/api/client-settings', (req, res, next) => {
+    try {
+      res.json({
+        ok: true,
+        repository: config.mainRepositoryId,
+        ...store.clientSettings(),
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.put('/api/client-settings', async (req, res, next) => {
+    if (migrationManager.hasPendingJob()) {
+      next(httpError(409, 'MIGRATION_IN_PROGRESS', '仓库迁移期间不能修改客户端显示设置'));
+      return;
+    }
+    const hideGameUi = req.body?.hide_game_ui;
+    if (typeof hideGameUi !== 'boolean') {
+      next(httpError(400, 'INVALID_HIDE_GAME_UI', 'hide_game_ui 必须是布尔值'));
+      return;
+    }
+
+    try {
+      const repository = config.mainRepository;
+      const indexRelative = path
+        .relative(repository.root, store.indexPath())
+        .split(path.sep)
+        .join('/');
+      const prepared = await prepareRepository(repository, [indexRelative]);
+      const current = store.clientSettings();
+
+      if (current.hide_game_ui === hideGameUi) {
+        let pushed = false;
+        let commit = null;
+        if (prepared.ahead > 0) {
+          await pushCurrent(repository);
+          pushed = true;
+          commit = (await repositoryStatus(repository)).commit;
+        }
+        res.json({
+          ok: true,
+          changed: false,
+          pushed,
+          commit,
+          repository: config.mainRepositoryId,
+          ...store.clientSettings(),
+        });
+        return;
+      }
+
+      store.setHideGameUi(hideGameUi);
+      const result = await commitAndPush(
+        repository,
+        [indexRelative],
+        `client: set hide_game_ui ${hideGameUi}`,
+      );
+      res.json({
+        ok: true,
+        changed: true,
+        pushed: result.pushed,
+        commit: result.commit,
+        repository: config.mainRepositoryId,
+        ...store.clientSettings(),
+      });
+    } catch (error) {
+      next(error);
+    }
   });
 
   app.get('/api/games', (req, res) => {

@@ -11,6 +11,8 @@ https://github.com/zjinnova2027/hermixrom
 - `tools/game-publisher/`：本地发布网站、上传逻辑、Git 发布和分仓工具
 - `publisher.config.json`：公开数据仓库、本地目录和游戏类型配置
 - `docs/`：接口、服务端和 SSH 账户说明
+- `docs/ios-client-integration.md`：iOS 在线游戏和动态入口接入说明
+- `docs/client-hide-game-ui.md`：客户端隐藏游戏界面开关说明
 - `docs/ssh-accounts/`：两个 GitHub 账户的公钥与用途记录
 
 ## 启动
@@ -52,7 +54,7 @@ hermixrom     公开数据仓库：index.json、分类 JSON、封面、ROM
 https://d.zjinnova.com/hermix/gameconfig/config.json
 ```
 
-后台启动后静默请求一次，解析公开仓库地址；失败时客户端回退到内置索引。
+客户端启动后静默请求一次，解析公开仓库地址；失败时优先使用上次成功地址，最后回退到内置索引。
 
 公开索引：
 

@@ -7,6 +7,8 @@ const state = {
   preview: null,
   job: null,
   pollTimer: null,
+  clientSettings: null,
+  savingClientSettings: false,
 };
 
 const el = (id) => document.getElementById(id);
@@ -26,16 +28,24 @@ const retryMigrationButton = el('retryMigrationButton');
 const restartMigrationButton = el('restartMigrationButton');
 const migrationDoneButton = el('migrationDoneButton');
 const migrationCloseButton = el('migrationCloseButton');
+const hideGameUiToggle = el('hideGameUiToggle');
+const hideGameUiToggleText = el('hideGameUiToggleText');
+const clientSettingsBadge = el('clientSettingsBadge');
+const clientSettingsMeta = el('clientSettingsMeta');
+const clientSettingsHint = el('clientSettingsHint');
+const saveClientSettingsButton = el('saveClientSettingsButton');
 
 async function init() {
   bindEvents();
   try {
-    const [config, overview] = await Promise.all([
+    const [config, overview, clientSettings] = await Promise.all([
       api('/api/config'),
       api('/api/repositories'),
+      api('/api/client-settings'),
     ]);
     state.config = config;
     renderOverview(overview);
+    renderClientSettings(clientSettings);
     const requestedType = new URLSearchParams(window.location.search).get('type');
     if (requestedType) {
       const item = overview.game_types.find((entry) => entry.type === requestedType);
@@ -62,6 +72,8 @@ function bindEvents() {
   migrationDoneButton.addEventListener('click', closeMigration);
   targetRepositoryUrl.addEventListener('input', clearMigrationError);
   targetBranch.addEventListener('input', clearMigrationError);
+  hideGameUiToggle.addEventListener('change', updateClientSettingsControls);
+  saveClientSettingsButton.addEventListener('click', saveClientSettings);
 }
 
 function renderOverview(overview) {
@@ -122,6 +134,62 @@ function renderOverview(overview) {
 
   if (overview.pending_job) {
     renderLatestJob(overview.pending_job);
+  }
+}
+
+function renderClientSettings(settings) {
+  state.clientSettings = settings;
+  const hidden = settings.hide_game_ui === true;
+  hideGameUiToggle.checked = hidden;
+  clientSettingsBadge.className = `client-setting-badge ${hidden ? 'on' : 'off'}`;
+  clientSettingsBadge.textContent = hidden ? '游戏界面已隐藏' : '游戏界面正常显示';
+  clientSettingsMeta.textContent =
+    `当前值：hide_game_ui = ${hidden}` +
+    (settings.updated_at ? ` · 总表更新时间 ${formatTime(settings.updated_at)}` : '');
+  updateClientSettingsControls();
+}
+
+function updateClientSettingsControls() {
+  const hidden = hideGameUiToggle.checked;
+  hideGameUiToggleText.textContent = hidden ? '开启' : '关闭';
+  clientSettingsHint.textContent = hidden
+    ? '开启后客户端会隐藏正常游戏界面，并展示指定页面。'
+    : '关闭后客户端会正常展示游戏界面。';
+  const changed = state.clientSettings
+    ? hidden !== (state.clientSettings.hide_game_ui === true)
+    : false;
+  saveClientSettingsButton.disabled = state.savingClientSettings || !changed;
+  saveClientSettingsButton.textContent = state.savingClientSettings
+    ? '正在提交到 GitHub...'
+    : '保存并提交到 GitHub';
+  hideGameUiToggle.disabled = state.savingClientSettings;
+}
+
+async function saveClientSettings() {
+  if (state.savingClientSettings) return;
+  state.savingClientSettings = true;
+  updateClientSettingsControls();
+  try {
+    const result = await api('/api/client-settings', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hide_game_ui: hideGameUiToggle.checked }),
+    });
+    state.savingClientSettings = false;
+    renderClientSettings(result);
+    const commitText = result.commit ? `，commit ${result.commit}` : '';
+    showNotice(
+      result.changed
+        ? `客户端显示设置已更新并提交到 GitHub${commitText}。`
+        : result.pushed
+          ? `设置已是最新状态，补推送到 GitHub 成功${commitText}。`
+          : '设置没有变化，无需提交。',
+      'success',
+    );
+  } catch (error) {
+    state.savingClientSettings = false;
+    updateClientSettingsControls();
+    showNotice(error.message, 'error');
   }
 }
 
