@@ -17,6 +17,16 @@ https://github.com/zjinnova2027/hermixrom
 
 ## 启动
 
+macOS 可直接运行根目录脚本：
+
+```bash
+./start-publisher.sh
+```
+
+脚本会自动检查 Node.js、安装缺失依赖、启动后台并打开仓库管理页。终端中按 `Ctrl+C` 停止服务。
+
+手动启动：
+
 ```bash
 cd tools/game-publisher
 npm install
